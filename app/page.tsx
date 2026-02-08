@@ -372,40 +372,40 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
             onMouseMove={handleMouseMove}
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => { x.set(0); y.set(0); onHover(false); }}
-            className={`relative w-full max-w-[350px] md:max-w-[400px] h-[420px] md:h-[540px] group transition-all duration-700 ${isActive ? 'scale-100 md:scale-105' : 'scale-95 opacity-50 grayscale sm:grayscale-0'}`}
+            className={`relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] h-[320px] sm:h-[380px] md:h-[540px] group transition-all duration-700 ${isActive ? 'scale-100 md:scale-105' : 'scale-95 opacity-50 grayscale sm:grayscale-0'}`}
         >
             <div className={`absolute -inset-4 rounded-[3rem] bg-gradient-to-br ${themeColor} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
 
-            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 flex flex-col justify-between overflow-hidden">
+            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] p-4 sm:p-6 md:p-12 flex flex-col justify-between overflow-hidden">
                 <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                     className="z-10"
                 >
-                    <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-12">
-                        <div className={`p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
-                            <Icon size={28} className="md:w-9 md:h-9" />
+                    <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-12">
+                        <div className={`p-2.5 sm:p-3 md:p-5 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
+                            <Icon size={20} className="sm:w-6 sm:h-6 md:w-9 md:h-9" />
                         </div>
                         <div>
-                            <h3 className="text-xl md:text-3xl font-black text-white tracking-tighter leading-none mb-1 md:mb-2">{title}</h3>
-                            <p className="text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.2em] md:tracking-[0.3em] font-bold">{subtitle}</p>
+                            <h3 className="text-lg sm:text-xl md:text-3xl font-black text-white tracking-tighter leading-none mb-0.5 sm:mb-1 md:mb-2">{title}</h3>
+                            <p className="text-[7px] sm:text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] font-bold">{subtitle}</p>
                         </div>
                     </div>
 
-                    <div className="space-y-3 md:space-y-6">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-6">
                         {features.map((f: string, i: number) => (
-                            <div key={i} className="flex items-center gap-3 md:gap-4 text-white/40 text-xs md:text-sm group-hover:text-white/80 transition-colors">
-                                <div className="w-1.5 h-[1px] bg-white/20" />
+                            <div key={i} className="flex items-center gap-2 sm:gap-3 md:gap-4 text-white/40 text-[10px] sm:text-xs md:text-sm group-hover:text-white/80 transition-colors">
+                                <div className="w-1 sm:w-1.5 h-[1px] bg-white/20" />
                                 {f}
                             </div>
                         ))}
                     </div>
                 </motion.div>
 
-                <div className="relative z-10 flex items-center justify-between mt-auto pt-8 border-t border-white/5">
-                    <span className="text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">Enter</span>
-                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                        <ArrowRight size={18} />
+                <div className="relative z-10 flex items-center justify-between mt-auto pt-4 sm:pt-6 md:pt-8 border-t border-white/5">
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">Enter</span>
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                        <ArrowRight size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />
                     </div>
                 </div>
 
@@ -542,7 +542,7 @@ export default function App() {
             {/* HERO / GATEWAY SECTION */}
             <motion.section
                 style={{ scale: heroScale, opacity: heroOpacity }}
-                className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-20 pb-32 px-6 overflow-hidden"
+                className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20 pb-20 sm:pb-32 px-3 sm:px-6 overflow-hidden"
             >
                 {/* Dynamic Background Elements - Hidden on mobile for performance */}
                 <div className="absolute inset-0 pointer-events-none hidden md:block">
@@ -582,7 +582,7 @@ export default function App() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 select-none"
+                        className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-4 sm:mb-6 md:mb-8 select-none"
                     >
                         <span className="inline-block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 filter drop-shadow-2xl">
                             {hoveredHub === 'genius' ? t.heroTitleGenius.split(' ')[0] + '.' : hoveredHub === 'life' ? t.heroTitleLife.split(' ')[0] + '.' : t.heroTitle1.split(' ')[1] || 'Learning'}
@@ -600,15 +600,15 @@ export default function App() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
-                        className="text-white/40 max-w-2xl mx-auto text-base md:text-lg lg:text-xl font-medium leading-relaxed px-4 md:px-0"
+                        className="text-white/40 max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed px-4 md:px-0"
                     >
                         Education that transcends boundaries. <br className="hidden md:block" />
                         <span className={hoveredHub === 'genius' ? 'text-purple-400' : 'text-white/60'}>Occult Sciences</span> & <span className={hoveredHub === 'life' ? 'text-blue-400' : 'text-white/60'}>Academic Excellence</span>.
                     </motion.p>
                 </div>
 
-                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-4 md:px-6 perspective-1000">
-                    <div className="flex-1 flex justify-end">
+                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-2 sm:px-4 md:px-6 perspective-1000">
+                    <div className="flex-1 flex justify-center lg:justify-end">
                         <GatewayCard
                             title="Genius Hub"
                             subtitle="Transform & Empower"
@@ -626,7 +626,7 @@ export default function App() {
                         <OrbitNav />
                     </div>
 
-                    <div className="flex-1 flex justify-start">
+                    <div className="flex-1 flex justify-center lg:justify-start">
                         <GatewayCard
                             title="Life Hub"
                             subtitle="Academic Excellence"
