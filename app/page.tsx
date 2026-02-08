@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence, useMotionTemplate, useReducedMotion } from 'framer-motion';
+import { useLanguage } from './contexts/LanguageContext';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import {
     Cpu,
     Sparkles,
@@ -35,44 +37,182 @@ import {
     MapPin,
     Twitter,
     Instagram,
-    Linkedin
+    Linkedin,
+    GraduationCap,
+    Heart,
+    Clock,
+    Target,
+    Award,
+    Lightbulb,
+    X
 } from 'lucide-react';
 
 // --- Constants & Data ---
 const GEMS = [
-    { id: 1, icon: <Code size={20} />, label: "Dev", x: "12%", y: "15%", speed: 0.05 },
-    { id: 2, icon: <Brain size={20} />, label: "Logic", x: "85%", y: "12%", speed: 0.03 },
-    { id: 3, icon: <Star size={20} />, label: "Astro", x: "8%", y: "80%", speed: 0.04 },
-    { id: 4, icon: <Palette size={20} />, label: "Art", x: "90%", y: "75%", speed: 0.06 },
-    { id: 5, icon: <InfinityIcon size={20} />, label: "Flow", x: "50%", y: "8%", speed: 0.02 },
+    { id: 1, icon: <BookOpen size={20} />, label: "Learn", x: "12%", y: "15%", speed: 0.05 },
+    { id: 2, icon: <Brain size={20} />, label: "Grow", x: "85%", y: "12%", speed: 0.03 },
+    { id: 3, icon: <Star size={20} />, label: "Shine", x: "8%", y: "80%", speed: 0.04 },
+    { id: 4, icon: <Heart size={20} />, label: "Care", x: "90%", y: "75%", speed: 0.06 },
+    { id: 5, icon: <InfinityIcon size={20} />, label: "Evolve", x: "50%", y: "8%", speed: 0.02 },
 ];
 
-const CURRICULUM = {
+const PROGRAMS = {
     genius: [
-        { title: "Advanced Programming", level: "Expert", duration: "12 Weeks", desc: "Master coding from basics to building real-world applications." },
-        { title: "Strategic Chess Training", level: "Pro", duration: "8 Weeks", desc: "Learn winning strategies from professional chess coaches." },
-        { title: "System Design", level: "Advanced", duration: "16 Weeks", desc: "Build scalable software systems used by millions." }
+        {
+            title: "Occult Sciences",
+            level: "All Levels",
+            duration: "Flexible",
+            desc: "Dive into the mysteries of the universe. Master the ancient arts of Astrology, Numerology, Tarot, and Vastu Shastra to decode destiny and align your life with cosmic rhythms."
+        },
+        {
+            title: "Life Coaching",
+            level: "Personal",
+            duration: "Ongoing",
+            desc: "Transform obstacles into stepping stones. Through deep introspection and strategic guidance, help you break limiting patterns, gain crystal-clear clarity, and design a life of purpose and power."
+        },
+        {
+            title: "Mentoring Programs",
+            level: "Growth",
+            duration: "Custom",
+            desc: "A bespoke journey of self-discovery. Whether you're a student, professional, or seeker, our 1:1 mentorship unlocks your latent potential, shapes your vision, and accelerates your personal evolution."
+        }
     ],
     life: [
-        { title: "Astrology & Self-Discovery", level: "Beginner", duration: "6 Weeks", desc: "Understand your birth chart and life path through ancient wisdom." },
-        { title: "Yoga & Meditation", level: "All Levels", duration: "Ongoing", desc: "Transform your mind and body with expert-guided practices." },
-        { title: "Culinary Arts", level: "Creative", duration: "4 Weeks", desc: "Cook like a chef with techniques from around the world." }
+        {
+            title: "Academic Support",
+            level: "All Ages",
+            duration: "Flexible",
+            desc: "Comprehensive academic excellence for K-12 students. Expert tutoring in Mathematics, Science, and Languages designed to build strong foundations and boost exam confidence."
+        },
+        {
+            title: "Skill Development",
+            level: "Beginner",
+            duration: "Ongoing",
+            desc: "Equip yourself for the future. From public speaking and critical thinking to digital literacy, we nurture the essential skills that define 21st-century leaders."
+        },
+        {
+            title: "Holistic Learning",
+            level: "All Levels",
+            duration: "Custom",
+            desc: "Education beyond textbooks. Our integrated curriculum fosters emotional intelligence, mindfulness, and creative expression for truly balanced growth."
+        }
     ]
 };
 
 const FEATURES = [
-    { icon: <Layers size={24} />, title: "Interactive Whiteboard", desc: "Collaborate in real-time with your mentor on a shared canvas." },
-    { icon: <Brain size={24} />, title: "Smart Notes", desc: "AI automatically creates summaries and action items from each session." },
-    { icon: <Video size={24} />, title: "Session Recordings", desc: "Rewatch any lesson with HD recordings and searchable transcripts." },
-    { icon: <Mic size={24} />, title: "Focus Music", desc: "Built-in ambient sounds to help you concentrate during learning." }
+    {
+        icon: <Globe size={24} />,
+        title: "Learning Without Borders",
+        desc: "Quality education and guidance for learners across the world, breaking barriers of distance, age, and background.",
+        details: "We believe knowledge should have no boundaries. Our platform connects students and seekers from every corner of the globe—USA, UK, India, Singapore, and beyond—offering a seamless, high-quality learning experience that feels just as personal as sitting in the same room."
+    },
+    {
+        icon: <Award size={24} />,
+        title: "20+ Years of Excellence",
+        desc: "Led by an experienced educator with deep academic and leadership expertise from prestigious institutions.",
+        details: "Our foundation is built on decades of real-world educational leadership. With a legacy of guiding students at top-tier institutions, we bring a level of pedagogical mastery, discipline, and insight that generic tutoring platforms simply cannot match."
+    },
+    {
+        icon: <Users size={24} />,
+        title: "One-to-One Personalized",
+        desc: "Every learner is unique. Our programs offer individual attention, customized paths, and focused mentoring.",
+        details: "Crowded classrooms leave talent behind. Our 1:1 mentorship model ensures that 100% of our focus is on YOU. We analyze your learning style, pace, and goals to create a hyper-personalized roadmap that guarantees progress."
+    },
+    {
+        icon: <Layers size={24} />,
+        title: "Holistic Programs",
+        desc: "From academics to occult sciences, and from life coaching to mentoring—supporting complete growth.",
+        details: "Success is multidimensional. Unlike traditional platforms that focus only on grades, we nurture the whole individual. Whether it's mastering Mathematics, understanding your destiny through Astrology, or finding life purpose, we provide the tools for complete evolution."
+    }
 ];
 
-const MENTORS = [
-    { name: "Dr. Aris Thorne", role: "Quantum Physics", hub: "Genius Hub", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200" },
-    { name: "Elena Veda", role: "Astrology & Flow", hub: "Life Hub", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200&h=200" },
-    { name: "Marcus Chen", role: "Grandmaster Chess", hub: "Genius Hub", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200" },
-    { name: "Sola Rin", role: "Culinary Artist", hub: "Life Hub", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200" },
+const THE_PROCESS = [
+    {
+        step: "01",
+        title: "Discovery",
+        desc: "We begin by understanding you. Through an initial deep-dive consultation, we identify your unique strengths, challenges, and aspirations.",
+        icon: <Compass size={32} />
+    },
+    {
+        step: "02",
+        title: "Strategy",
+        desc: "Amaira crafts a bespoke learning path for you, blending academic rigor with spiritual insights tailored to your personal blueprint.",
+        icon: <MapPin size={32} />
+    },
+    {
+        step: "03",
+        title: "Growth",
+        desc: "Engage in vivid, one-on-one sessions. Whether it's mastering a subject or unlocking intuitive powers, you learn at your own pace.",
+        icon: <Zap size={32} />
+    },
+    {
+        step: "04",
+        title: "Evolution",
+        desc: "Knowledge becomes wisdom. You emerge not just with better grades or skills, but with clarity, confidence, and a higher sense of purpose.",
+        icon: <Star size={32} />
+    }
 ];
+
+// --- Feature Modal Component ---
+const FeatureModal = ({ feature, onClose }: { feature: typeof FEATURES[0] | null, onClose: () => void }) => {
+    const { t } = useLanguage();
+    if (!feature) return null;
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+        >
+            <motion.div
+                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.95, y: 10, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto"
+            >
+                {/* Modal Background Glow */}
+                <div className="absolute top-0 right-0 w-[200px] md:w-[300px] h-[200px] md:h-[300px] bg-purple-600/20 blur-[80px] md:blur-[100px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[200px] md:w-[300px] h-[200px] md:h-[300px] bg-blue-600/20 blur-[80px] md:blur-[100px] rounded-full pointer-events-none" />
+
+                <div className="relative z-10 p-6 md:p-10 lg:p-14">
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 md:top-8 right-4 md:right-8 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:bg-white/10 hover:text-white transition-all"
+                    >
+                        <X size={18} />
+                    </button>
+
+                    <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex items-center justify-center mb-6 md:mb-8 text-white shadow-xl">
+                        {feature.icon}
+                    </div>
+
+                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-white mb-4 md:mb-6 tracking-tight leading-none">
+                        {feature.title}
+                    </h3>
+
+                    <div className="w-10 md:w-12 h-1 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mb-6 md:mb-8" />
+
+                    <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed font-light">
+                        {feature.details}
+                    </p>
+
+                    <div className="mt-6 md:mt-10 pt-6 md:pt-10 border-t border-white/5 flex justify-end">
+                        <button
+                            onClick={onClose}
+                            className="px-6 md:px-8 py-2.5 md:py-3 rounded-full bg-white text-black font-bold text-sm md:text-base hover:bg-white/90 transition-colors"
+                        >
+                            {t.closeButton}
+                        </button>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+
 
 // --- Sub-Components ---
 
@@ -94,7 +234,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
                     className="w-24 h-24 border-t-2 border-white/20 rounded-full"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[10px] tracking-[0.5em] text-white font-black italic">THETHESIS</span>
+                    <span className="text-[8px] tracking-[0.3em] text-white font-black">BIRENDRA</span>
                 </div>
             </div>
             <motion.div
@@ -110,18 +250,18 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 const SectionHeader = ({ subtitle, title, align = "left" }: { subtitle: string, title: string, align?: "left" | "center" }) => (
-    <div className={`mb-24 ${align === "center" ? "text-center" : "text-left"}`}>
+    <div className={`mb-12 md:mb-24 ${align === "center" ? "text-center" : "text-left"}`}>
         <motion.span
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="text-[10px] uppercase tracking-[0.6em] text-white/30 font-black mb-6 block"
+            className="text-[10px] uppercase tracking-[0.4em] md:tracking-[0.6em] text-white/30 font-black mb-4 md:mb-6 block"
         >
             {subtitle}
         </motion.span>
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8]"
+            className="text-3xl md:text-5xl lg:text-7xl font-black italic tracking-tighter uppercase leading-[0.85]"
         >
             {title}
         </motion.h2>
@@ -136,7 +276,7 @@ const OrbitNav = () => {
                 whileHover={{ scale: 1.1 }}
             >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="text-[10px] md:text-xs font-black tracking-[0.3em] text-white z-10 italic">THETHESIS</span>
+                <span className="text-[8px] md:text-[10px] font-black tracking-[0.2em] text-white z-10 text-center leading-tight">BIRENDRA<br />GLOBAL</span>
             </motion.div>
 
             {[0, 120, 240].map((angle, i) => (
@@ -159,7 +299,60 @@ const OrbitNav = () => {
     );
 };
 
-const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHover, isActive, href }: any) => {
+// Coming Soon Modal
+const ComingSoonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+    const { t } = useLanguage();
+    if (!isOpen) return null;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={onClose}
+        >
+            <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className="relative bg-gradient-to-br from-blue-900/90 to-indigo-900/90 backdrop-blur-xl border border-white/20 rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 max-w-md mx-4 text-center"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <button
+                    onClick={onClose}
+                    className="absolute top-4 md:top-6 right-4 md:right-6 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 transition-colors"
+                >
+                    <X size={16} />
+                </button>
+                <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 md:mb-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-2xl"
+                >
+                    <Sparkles size={28} className="text-white md:hidden" />
+                    <Sparkles size={36} className="text-white hidden md:block" />
+                </motion.div>
+                <h3 className="text-2xl md:text-3xl font-black text-white mb-3 md:mb-4">{t.comingSoon}</h3>
+                <p className="text-white/60 text-base md:text-lg leading-relaxed">
+                    {t.comingSoonDesc}
+                </p>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onClose}
+                    className="mt-6 md:mt-8 px-6 md:px-8 py-2.5 md:py-3 bg-white text-slate-900 rounded-xl font-bold text-sm md:text-base"
+                >
+                    {t.gotIt}
+                </motion.button>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+
+
+const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHover, isActive, href, onClick }: any) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const mouseXSpring = useSpring(x);
@@ -179,29 +372,29 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
             onMouseMove={handleMouseMove}
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => { x.set(0); y.set(0); onHover(false); }}
-            className={`relative w-full max-w-[400px] h-[540px] group transition-all duration-700 ${isActive ? 'scale-105' : 'scale-95 opacity-50 grayscale sm:grayscale-0'}`}
+            className={`relative w-full max-w-[350px] md:max-w-[400px] h-[420px] md:h-[540px] group transition-all duration-700 ${isActive ? 'scale-100 md:scale-105' : 'scale-95 opacity-50 grayscale sm:grayscale-0'}`}
         >
             <div className={`absolute -inset-4 rounded-[3rem] bg-gradient-to-br ${themeColor} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
 
-            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-12 flex flex-col justify-between overflow-hidden">
+            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 flex flex-col justify-between overflow-hidden">
                 <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                     className="z-10"
                 >
-                    <div className="flex items-center gap-6 mb-12">
-                        <div className={`p-5 rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
-                            <Icon size={36} />
+                    <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-12">
+                        <div className={`p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
+                            <Icon size={28} className="md:w-9 md:h-9" />
                         </div>
                         <div>
-                            <h3 className="text-3xl font-black text-white tracking-tighter leading-none mb-2">{title}</h3>
-                            <p className="text-[10px] text-white/30 uppercase tracking-[0.3em] font-bold">{subtitle}</p>
+                            <h3 className="text-xl md:text-3xl font-black text-white tracking-tighter leading-none mb-1 md:mb-2">{title}</h3>
+                            <p className="text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.2em] md:tracking-[0.3em] font-bold">{subtitle}</p>
                         </div>
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="space-y-3 md:space-y-6">
                         {features.map((f: string, i: number) => (
-                            <div key={i} className="flex items-center gap-4 text-white/40 text-sm group-hover:text-white/80 transition-colors">
+                            <div key={i} className="flex items-center gap-3 md:gap-4 text-white/40 text-xs md:text-sm group-hover:text-white/80 transition-colors">
                                 <div className="w-1.5 h-[1px] bg-white/20" />
                                 {f}
                             </div>
@@ -221,6 +414,10 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
         </motion.div>
     );
 
+    if (onClick) {
+        return <div onClick={onClick} className="contents cursor-pointer">{CardContent}</div>;
+    }
+
     if (href) {
         return <Link href={href} className="contents">{CardContent}</Link>;
     }
@@ -230,9 +427,27 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
 // --- Main App ---
 
 export default function App() {
+    const { t } = useLanguage();
     const [isLoading, setIsLoading] = useState(true);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hoveredHub, setHoveredHub] = useState<string | null>(null);
+    const [showComingSoon, setShowComingSoon] = useState(false);
+    const [selectedFeature, setSelectedFeature] = useState<typeof FEATURES[0] | null>(null);
+    const [bookingProgram, setBookingProgram] = useState<any | null>(null);
+    const [userRegion, setUserRegion] = useState<'IN' | 'INTL'>('INTL');
+    const [isMounted, setIsMounted] = useState(false);
+    const prefersReducedMotion = useReducedMotion();
+
+    // Auto-detect User Region on Mount
+    useEffect(() => {
+        setIsMounted(true);
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (timeZone.includes("Calcutta") || timeZone.includes("Kolkata") || timeZone.includes("India")) {
+            setUserRegion('IN');
+        } else {
+            setUserRegion('INTL');
+        }
+    }, []);
     const { scrollYProgress } = useScroll();
 
     const heroScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.9]);
@@ -250,10 +465,30 @@ export default function App() {
     }, []);
 
     return (
-        <div className="relative min-h-[400vh] w-full bg-[#030303] overflow-x-hidden font-sans selection:bg-white/20 text-white">
+        <div suppressHydrationWarning className="relative min-h-[400vh] w-full bg-[#030303] overflow-x-hidden font-sans selection:bg-white/20 text-white">
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             <AnimatePresence>
                 {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+                {bookingProgram && (
+                    <BookingModal
+                        program={bookingProgram}
+                        region={userRegion}
+                        onClose={() => setBookingProgram(null)}
+                    />
+                )}
+                {selectedFeature && (
+                    <FeatureModal
+                        feature={selectedFeature}
+                        onClose={() => setSelectedFeature(null)}
+                    />
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {showComingSoon && <ComingSoonModal isOpen={showComingSoon} onClose={() => setShowComingSoon(false)} />}
             </AnimatePresence>
 
             {/* DUAL-REALITY BACKGROUND ENGINE */}
@@ -261,7 +496,7 @@ export default function App() {
                 className="fixed inset-0 pointer-events-none z-0 transition-colors duration-1000"
                 animate={{
                     background: hoveredHub === 'genius'
-                        ? 'radial-gradient(circle at 25% 40%, #2a0a0a 0%, #030303 100%)'
+                        ? 'radial-gradient(circle at 25% 40%, #1a0a2a 0%, #030303 100%)'
                         : hoveredHub === 'life'
                             ? 'radial-gradient(circle at 75% 40%, #0a102a 0%, #030303 100%)'
                             : 'radial-gradient(circle at 50% 50%, #0a0a0a 0%, #030303 100%)'
@@ -272,7 +507,7 @@ export default function App() {
                 className="fixed inset-0 pointer-events-none z-0 transition-opacity duration-1000"
                 animate={{
                     opacity: hoveredHub ? 0.08 : 0.03,
-                    stroke: hoveredHub === 'genius' ? '#ff3333' : hoveredHub === 'life' ? '#3388ff' : '#ffffff'
+                    stroke: hoveredHub === 'genius' ? '#9933ff' : hoveredHub === 'life' ? '#3388ff' : '#ffffff'
                 }}
                 style={{
                     backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
@@ -283,7 +518,7 @@ export default function App() {
             {GEMS.map((gem) => (
                 <motion.div
                     key={gem.id}
-                    className="fixed pointer-events-none opacity-20 text-white z-0"
+                    className="fixed pointer-events-none opacity-20 text-white z-0 hidden md:block"
                     style={{ left: gem.x, top: gem.y }}
                     animate={{
                         x: mousePos.x * gem.speed * 20,
@@ -307,160 +542,262 @@ export default function App() {
             {/* HERO / GATEWAY SECTION */}
             <motion.section
                 style={{ scale: heroScale, opacity: heroOpacity }}
-                className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-24 px-6 overflow-hidden"
+                className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-20 pb-32 px-6 overflow-hidden"
             >
-                <div className="text-center mb-20 max-w-6xl mx-auto">
+                {/* Dynamic Background Elements - Hidden on mobile for performance */}
+                <div className="absolute inset-0 pointer-events-none hidden md:block">
+                    <motion.div
+                        animate={{
+                            opacity: hoveredHub === 'genius' ? 0.6 : 0.2,
+                            scale: hoveredHub === 'genius' ? 1.2 : 1
+                        }}
+                        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-600/20 blur-[120px] rounded-full transition-all duration-1000"
+                    />
+                    <motion.div
+                        animate={{
+                            opacity: hoveredHub === 'life' ? 0.6 : 0.2,
+                            scale: hoveredHub === 'life' ? 1.2 : 1
+                        }}
+                        className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/20 blur-[120px] rounded-full transition-all duration-1000"
+                    />
+                </div>
+                {/* Simple static background for mobile */}
+                <div className="absolute inset-0 pointer-events-none md:hidden">
+                    <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-600/10 blur-[80px] rounded-full" />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 blur-[80px] rounded-full" />
+                </div>
+
+                <div className="text-center mb-16 max-w-7xl mx-auto relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center justify-center gap-6 mb-12"
+                        transition={{ delay: 0.5 }}
+                        className="inline-flex items-center gap-4 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12 hover:bg-white/10 transition-colors cursor-default"
                     >
-                        <div className={`h-[1px] w-12 transition-colors duration-700 ${hoveredHub === 'genius' ? 'bg-red-500' : 'bg-white/10'}`} />
-                        <span className="text-xs uppercase tracking-widest text-white/40 font-bold">THETHESIS</span>
-                        <div className={`h-[1px] w-12 transition-colors duration-700 ${hoveredHub === 'life' ? 'bg-blue-500' : 'bg-white/10'}`} />
+                        <span className={`w-2 h-2 rounded-full ${hoveredHub === 'genius' ? 'bg-purple-500 shadow-[0_0_10px_#a855f7]' : hoveredHub === 'life' ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 'bg-white/50'}`} />
+                        <span className="text-xs uppercase tracking-[0.2em] text-white/60 font-medium">{t.heroSubtitle}</span>
                     </motion.div>
 
                     <motion.h1
-                        initial={{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="text-5xl md:text-8xl font-black tracking-tight leading-none mb-8 select-none"
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 select-none"
                     >
-                        {hoveredHub === 'genius' ? 'Learn.' : hoveredHub === 'life' ? 'Grow.' : 'Master.'} <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20">Transform.</span>
+                        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/40 filter drop-shadow-2xl">
+                            {hoveredHub === 'genius' ? t.heroTitleGenius.split(' ')[0] + '.' : hoveredHub === 'life' ? t.heroTitleLife.split(' ')[0] + '.' : t.heroTitle1.split(' ')[1] || 'Learning'}
+                        </span>
+                        <br />
+                        <span className={`inline-block text-transparent bg-clip-text bg-gradient-to-r transition-all duration-700 ${hoveredHub === 'genius' ? 'from-purple-400 to-pink-400' :
+                            hoveredHub === 'life' ? 'from-blue-400 to-cyan-400' :
+                                'from-white/60 to-white/20'
+                            }`}>
+                            {t.heroTitle2}
+                        </span>
                     </motion.h1>
 
-                    <motion.p className="text-white/40 max-w-lg mx-auto text-base md:text-lg font-medium leading-relaxed">
-                        Expert 1-on-1 mentorship for technical skills and personal growth. <br /> Choose your path below.
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                        className="text-white/40 max-w-2xl mx-auto text-base md:text-lg lg:text-xl font-medium leading-relaxed px-4 md:px-0"
+                    >
+                        Education that transcends boundaries. <br className="hidden md:block" />
+                        <span className={hoveredHub === 'genius' ? 'text-purple-400' : 'text-white/60'}>Occult Sciences</span> & <span className={hoveredHub === 'life' ? 'text-blue-400' : 'text-white/60'}>Academic Excellence</span>.
                     </motion.p>
                 </div>
 
-                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-40 w-full pb-32">
-                    <GatewayCard
-                        title="Genius Hub"
-                        subtitle="Technical Skills"
-                        icon={Cpu}
-                        isActive={hoveredHub === 'genius' || !hoveredHub}
-                        themeColor="from-red-600 to-orange-500"
-                        onHover={(h: boolean) => setHoveredHub(h ? 'genius' : null)}
-                        features={["Programming & Development", "Chess & Strategy", "Math & Science", "System Design"]}
-                        href="/genius-hub"
-                    />
+                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-4 md:px-6 perspective-1000">
+                    <div className="flex-1 flex justify-end">
+                        <GatewayCard
+                            title="Genius Hub"
+                            subtitle="Transform & Empower"
+                            icon={Sparkles}
+                            isActive={hoveredHub === 'genius' || !hoveredHub}
+                            themeColor="from-purple-600 via-violet-600 to-indigo-600"
+                            onHover={(h: boolean) => setHoveredHub(h ? 'genius' : null)}
+                            features={["Occult Sciences", "Spiritual Wisdom", "Life Coaching", "Inner Growth"]}
+                            href="/genius-hub"
+                        />
+                    </div>
 
-                    <div className="hidden lg:block">
+                    <div className="hidden lg:flex items-center justify-center w-24 relative z-20">
+                        <div className="h-full w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent absolute left-1/2 -translate-x-1/2" />
                         <OrbitNav />
                     </div>
 
-                    <GatewayCard
-                        title="Life Hub"
-                        subtitle="Personal Growth"
-                        icon={Moon}
-                        isActive={hoveredHub === 'life' || !hoveredHub}
-                        themeColor="from-blue-600 to-indigo-500"
-                        onHover={(h: boolean) => setHoveredHub(h ? 'life' : null)}
-                        features={["Astrology & Charts", "Yoga & Wellness", "Cooking & Nutrition", "Art & Creativity"]}
-                    />
+                    <div className="flex-1 flex justify-start">
+                        <GatewayCard
+                            title="Life Hub"
+                            subtitle="Academic Excellence"
+                            icon={GraduationCap}
+                            isActive={hoveredHub === 'life' || !hoveredHub}
+                            themeColor="from-blue-600 via-indigo-600 to-cyan-600"
+                            onHover={(h: boolean) => setHoveredHub(h ? 'life' : null)}
+                            features={["Academic Support", "Skill Building", "Mentorship", "Global Curriculum"]}
+                            onClick={() => setShowComingSoon(true)}
+                        />
+                    </div>
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5, duration: 1 }}
+                    className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                >
+                    <span className="text-[10px] uppercase tracking-widest text-white/20">{t.scrollDown}</span>
+                    <motion.div
+                        animate={{ y: [0, 5, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="w-px h-12 bg-gradient-to-b from-white/20 to-transparent"
+                    />
+                </motion.div>
             </motion.section>
 
-            {/* PLATFORM ECOSYSTEM: TECH STACK */}
-            <section className="relative z-10 py-48 px-6 bg-[#050505] border-y border-white/5">
-                <div className="container mx-auto">
-                    <SectionHeader subtitle="Platform Features" title="Everything You Need to Learn." />
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* FOUNDER STORY SECTION */}
+            <section id="about" className="relative z-10 py-16 md:py-32 px-4 md:px-6 bg-[#030303] overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(88,28,135,0.1),transparent_70%)]" />
+
+                <div className="container mx-auto max-w-7xl relative">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-white/[0.02] backdrop-blur-2xl p-4 sm:p-8 md:p-16 overflow-hidden relative"
+                    >
+                        {/* Decorative background elements */}
+                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+
+                        <div className="grid lg:grid-cols-12 gap-8 md:gap-12 items-center relative z-10">
+                            {/* Photo Column */}
+                            <div className="lg:col-span-5 order-2 lg:order-1">
+                                <div className="relative mx-auto max-w-[280px] sm:max-w-[350px] md:max-w-[400px]">
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-[3rem] blur-lg opacity-40 transform rotate-3 scale-105" />
+                                    <div className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0a0a0a]">
+                                        <div className="aspect-[3/4] relative">
+                                            <img
+                                                src="/maam.jpeg"
+                                                alt="Amaira Srivastava"
+                                                className="w-full h-full object-cover object-top"
+                                                style={{ filter: 'contrast(1.05) brightness(1.05)' }}
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
+
+                                            {/* Name Overlay */}
+                                            <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6">
+                                                <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-4">
+                                                    <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">{t.founderName}</h3>
+                                                    <p className="text-purple-300 font-medium text-xs sm:text-sm">{t.founderRole}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Floating Stats */}
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.2 }}
+                                        className="absolute top-4 md:top-8 -left-2 md:-left-8 bg-[#0a0a0a] border border-white/10 p-2 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 scale-75 md:scale-100 origin-left"
+                                    >
+                                        <div className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                                            <Award size={20} />
+                                        </div>
+                                        <div>
+                                            <div className="text-white font-bold text-lg leading-none">{t.yearsExperience}</div>
+                                            <div className="text-white/40 text-[10px] uppercase font-bold tracking-wider">{t.experienceLabel}</div>
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            </div>
+
+                            {/* Content Column */}
+                            <div className="lg:col-span-7 order-1 lg:order-2 space-y-8 text-center lg:text-left">
+                                <div className="space-y-4">
+                                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-widest">
+                                        <Sparkles size={12} /> {t.founderVisionaryTag}
+                                    </span>
+                                    <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
+                                        Empowering Minds,<br />
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Transforming Lives.</span>
+                                    </h2>
+                                </div>
+
+                                <div className="space-y-4 md:space-y-6 text-sm md:text-lg text-white/50 leading-relaxed font-light">
+                                    <p>
+                                        Founded by <strong className="text-white">Amaira Srivastava</strong>, Birendra Global Vision is built on a foundation of wisdom, compassion, and purpose. With over two decades of excellence in education, Amaira has shaped thousands of lives.
+                                    </p>
+                                    <p className="hidden sm:block">
+                                        From her tenure at prestigious institutions like <span className="text-white/80 border-b border-white/20">City Montessori School</span> and <span className="text-white/80 border-b border-white/20">Loreto Convent College</span>, to her leadership roles as Head of School and Academic Manager, she brings a wealth of experience to every mentorship session.
+                                    </p>
+                                </div>
+
+                                <div className="pt-8 border-t border-white/5 grid sm:grid-cols-2 gap-6">
+                                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5 text-left hover:bg-white/10 transition-colors">
+                                        <Globe className="text-purple-400 mb-3" size={24} />
+                                        <h4 className="text-white font-bold mb-1">Global Impact</h4>
+                                        <p className="text-white/40 text-sm">Connecting learners across borders through technology.</p>
+                                    </div>
+                                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5 text-left hover:bg-white/10 transition-colors">
+                                        <Heart className="text-pink-400 mb-3" size={24} />
+                                        <h4 className="text-white font-bold mb-1">Holistic Approach</h4>
+                                        <p className="text-white/40 text-sm">Nurturing intellectual, emotional, and spiritual growth.</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                                    <motion.blockquote
+                                        className="text-white/80 text-base md:text-xl font-medium italic border-l-4 border-purple-500 pl-4 md:pl-6 py-2 bg-gradient-to-r from-purple-500/10 to-transparent rounded-r-xl md:rounded-r-2xl"
+                                    >
+                                        &ldquo;We don&apos;t just teach—we inspire, guide, and empower you to discover your true potential.&rdquo;
+                                    </motion.blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* PLATFORM FEATURES */}
+            <section id="features" className="relative z-10 py-16 md:py-32 px-4 md:px-6 bg-[#050505] border-y border-white/5">
+                <div className="container mx-auto max-w-7xl">
+                    <SectionHeader subtitle={t.featuresSubtitle} title={t.featuresTitle} />
+
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                         {FEATURES.map((feat, i) => (
                             <motion.div
                                 key={i}
-                                whileHover={{ y: -10 }}
-                                className="p-10 rounded-[2.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-md group hover:bg-white/[0.05] transition-all"
-                            >
-                                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 mb-8 group-hover:text-white transition-colors">
-                                    {feat.icon}
-                                </div>
-                                <h4 className="text-xl font-bold mb-4 tracking-tight">{feat.title}</h4>
-                                <p className="text-white/40 text-sm leading-relaxed">{feat.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CURRICULUM EXPLORATION */}
-            <section className="relative z-10 py-48 px-6">
-                <div className="container mx-auto">
-                    <div className="grid lg:grid-cols-2 gap-24">
-                        {/* Genius Track */}
-                        <div>
-                            <SectionHeader subtitle="Technical" title="Genius Hub Courses" />
-                            <div className="space-y-6">
-                                {CURRICULUM.genius.map((item, i) => (
-                                    <div key={i} className="p-8 rounded-3xl bg-red-500/5 border border-red-500/10 group hover:bg-red-500/10 transition-all cursor-pointer">
-                                        <div className="flex justify-between items-center mb-4">
-                                            <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-500 text-[8px] font-black uppercase tracking-widest">{item.level}</span>
-                                            <span className="text-[8px] text-white/20 uppercase tracking-widest">{item.duration}</span>
-                                        </div>
-                                        <h5 className="text-xl font-bold mb-3">{item.title}</h5>
-                                        <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Life Track */}
-                        <div>
-                            <SectionHeader subtitle="Personal Growth" title="Life Hub Courses" />
-                            <div className="space-y-6">
-                                {CURRICULUM.life.map((item, i) => (
-                                    <div key={i} className="p-8 rounded-3xl bg-blue-500/5 border border-blue-500/10 group hover:bg-blue-500/10 transition-all cursor-pointer">
-                                        <div className="flex justify-between items-center mb-4">
-                                            <span className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-500 text-[8px] font-black uppercase tracking-widest">{item.level}</span>
-                                            <span className="text-[8px] text-white/20 uppercase tracking-widest">{item.duration}</span>
-                                        </div>
-                                        <h5 className="text-xl font-bold mb-3">{item.title}</h5>
-                                        <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* MENTORS / EXPERTS SECTION */}
-            <section className="relative z-10 py-48 px-6 bg-white/[0.01] border-y border-white/5">
-                <div className="container mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-end gap-12 mb-24">
-                        <div className="max-w-3xl">
-                            <span className="text-xs uppercase tracking-widest text-white/30 font-bold mb-6 block">Our Mentors</span>
-                            <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-                                Learn From <span className="text-white/30">The Best</span><br />In Every Field.
-                            </h2>
-                        </div>
-                        <p className="text-white/40 text-sm max-w-xs leading-relaxed border-l border-white/10 pl-8">
-                            Every mentor is carefully vetted and has proven expertise in their area.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {MENTORS.map((mentor, i) => (
-                            <motion.div
-                                key={i}
+                                layoutId={`feature-card-main-${i}`}
+                                onClick={() => setSelectedFeature(feat)}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="group relative rounded-[3rem] overflow-hidden bg-white/5 border border-white/5 p-8 hover:bg-white/10 transition-all duration-500"
+                                whileHover={{ y: -10 }}
+                                className="group relative p-4 md:p-8 h-full rounded-[1.5rem] md:rounded-[2.5rem] bg-[#080808] border border-white/5 hover:border-white/10 cursor-pointer overflow-hidden transition-all duration-300"
                             >
-                                <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden mb-8">
-                                    <img src={mentor.img} alt={mentor.name} className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
-                                    <div className={`absolute top-6 right-6 p-3 rounded-full backdrop-blur-xl border border-white/10 ${mentor.hub === 'Genius Hub' ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
-                                        {mentor.hub === 'Genius Hub' ? <Zap size={16} /> : <Sparkles size={16} />}
+                                {/* Hover Gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-transparent to-blue-500/0 group-hover:from-purple-500/5 group-hover:to-blue-500/5 transition-all duration-500" />
+
+                                <div className="relative z-10 flex flex-col h-full">
+                                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-white/40 mb-4 md:mb-6 group-hover:text-white group-hover:bg-white/10 group-hover:scale-110 transition-all duration-300">
+                                        {feat.icon}
                                     </div>
-                                </div>
-                                <h4 className="text-xl font-bold tracking-tight mb-2">{mentor.name}</h4>
-                                <p className="text-xs uppercase tracking-wider text-white/30 font-medium">{mentor.role}</p>
-                                <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span className="text-xs uppercase tracking-wider font-bold">View Profile</span>
-                                    <ChevronRight size={14} />
+
+                                    <h4 className="text-sm md:text-xl font-bold mb-2 md:mb-4 tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/70 transition-all">
+                                        {feat.title}
+                                    </h4>
+
+                                    <p className="text-white/40 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 flex-grow line-clamp-3 md:line-clamp-none">
+                                        {feat.desc}
+                                    </p>
+
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-400 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                        <span>Discover</span>
+                                        <ChevronRight size={14} />
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
@@ -468,104 +805,552 @@ export default function App() {
                 </div>
             </section>
 
-            {/* GLOBAL RESIDENCY / RETREATS */}
-            <section className="relative z-10 py-48 px-6 bg-[#080808]">
-                <div className="container mx-auto">
-                    <div className="flex flex-col lg:flex-row items-center gap-24">
-                        <div className="flex-1">
-                            <SectionHeader subtitle="In-Person Events" title="Retreats & Workshops" />
-                            <p className="text-white/40 text-base mb-12 leading-relaxed">
-                                Join exclusive in-person retreats in beautiful locations worldwide. Connect with mentors and fellow learners face-to-face.
-                            </p>
-                            <div className="space-y-4">
-                                {[
-                                    { location: "Kyoto, Japan", focus: "Mindfulness & Design", date: "April 2026" },
-                                    { location: "Zermatt, Switzerland", focus: "Strategy Summit", date: "October 2026" }
-                                ].map((retreat, i) => (
-                                    <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group cursor-pointer hover:bg-white/10 transition-all">
-                                        <div className="flex items-center gap-4">
-                                            <MapPin size={18} className="text-white/20" />
-                                            <div>
-                                                <h6 className="font-bold text-sm">{retreat.location}</h6>
-                                                <p className="text-xs text-white/40">{retreat.focus}</p>
-                                            </div>
+            {/* THE JOURNEY / PROCESS SECTION */}
+            <section id="journey" className="relative z-10 py-16 md:py-32 px-4 md:px-6">
+                <div className="container mx-auto max-w-7xl">
+                    <SectionHeader subtitle={t.journeySubtitle} title={t.journeyTitle} align="center" />
+
+                    <div className="relative grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                        {/* Connecting Line (Desktop) */}
+                        <div className="absolute top-12 left-0 w-full h-[2px] bg-gradient-to-r from-purple-900/0 via-purple-500/20 to-blue-900/0 hidden md:block" />
+
+                        {THE_PROCESS.map((step, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.2 }}
+                                className="relative group"
+                            >
+                                <div className="relative z-10 flex flex-col items-center text-center">
+                                    <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-4 md:mb-8 relative group-hover:border-purple-500/50 transition-colors duration-500">
+                                        <div className="absolute inset-1 md:inset-2 rounded-full border border-white/5 border-dashed animate-[spin_10s_linear_infinite]" />
+                                        <span className="text-xl md:text-3xl font-black text-white/20 group-hover:text-white transition-colors duration-500">{step.step}</span>
+                                        <div className="absolute -bottom-2 md:-bottom-3 px-2 md:px-3 py-0.5 md:py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/5 text-[10px] md:text-xs font-bold text-white shadow-xl">
+                                            {step.icon}
                                         </div>
-                                        <span className="text-xs text-white/30 font-medium">{retreat.date}</span>
+                                    </div>
+
+                                    <h4 className="text-base md:text-2xl font-bold text-white mb-2 md:mb-4">{step.title}</h4>
+                                    <p className="text-white/40 text-xs md:text-sm leading-relaxed max-w-[200px] md:max-w-[250px] mx-auto">
+                                        {step.desc}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* PROGRAMS SECTION */}
+            <section id="programs" className="relative z-10 py-16 md:py-48 px-4 md:px-6 bg-[#050505] border-y border-white/5 overflow-hidden">
+                {/* Background Ambient Glow */}
+                <div className="absolute top-1/2 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-600/10 blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
+                <div className="absolute top-1/2 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-600/10 blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
+
+                <div className="container mx-auto max-w-7xl">
+                    <div className="grid lg:grid-cols-2 gap-12 md:gap-24 relative">
+                        {/* Central Divider (Desktop) */}
+                        <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent hidden lg:block" />
+
+                        {/* Genius Track (Left Column) */}
+                        <div className="relative">
+                            <motion.div
+                                initial={{ opacity: 0, x: -50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                className="mb-8 md:mb-12"
+                            >
+                                <SectionHeader subtitle={t.programsSubtitle} title={t.programsTitle} />
+                            </motion.div>
+
+                            <div className="space-y-4 md:space-y-8">
+                                {PROGRAMS.genius.map((item, i) => (
+                                    <div key={i} onClick={() => setBookingProgram(item)} className="cursor-pointer">
+                                        <ProgramCard item={item} index={i} color="purple" />
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className="flex-1 w-full aspect-video rounded-[3rem] bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex items-center justify-center relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200')] bg-cover bg-center grayscale opacity-20 group-hover:scale-105 transition-transform duration-1000" />
-                            <div className="z-10 text-center">
-                                <span className="text-xs uppercase tracking-widest text-white/40 block mb-4">Request Access</span>
-                                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all cursor-pointer">
-                                    <Lock size={20} />
-                                </div>
+
+                        {/* Coming Soon Track (Right Column) */}
+                        <div className="relative">
+                            <motion.div
+                                initial={{ opacity: 0, x: 50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                className="mb-8 md:mb-12"
+                            >
+                                <SectionHeader subtitle={t.comingSoon} title={t.comingSoon} />
+                            </motion.div>
+
+                            <div className="space-y-4 md:space-y-8">
+                                {PROGRAMS.life.map((item, i) => (
+                                    <div key={i} onClick={() => setBookingProgram(item)} className="cursor-pointer">
+                                        <ProgramCard item={item} index={i} color="blue" isComingSoon />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* FINAL CONVERGENCE FOOTER */}
-            <footer className="relative z-10 pt-32 pb-12 px-6 bg-black border-t border-white/5">
-                <div className="container mx-auto">
-                    <div className="grid lg:grid-cols-12 gap-16 mb-24">
 
-                        {/* Brand Column */}
-                        <div className="lg:col-span-5 space-y-8">
-                            <h2 className="text-5xl font-black tracking-tight text-white">THETHESIS</h2>
-                            <p className="text-white/40 text-sm leading-relaxed max-w-md">
-                                Expert mentorship platform for technical skills and personal growth. <br />
-                                Global Headquarters · Est. 2024
-                            </p>
-                            <div className="flex gap-6">
-                                {[Twitter, Instagram, Linkedin].map((Icon, i) => (
-                                    <motion.div
-                                        key={i}
-                                        whileHover={{ scale: 1.1, color: "#fff" }}
-                                        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 cursor-pointer transition-colors hover:bg-white/10"
-                                    >
-                                        <Icon size={16} />
-                                    </motion.div>
-                                ))}
+
+            {/* FOOTER: THE COSMOS */}
+            <footer className="relative z-10 bg-[#020205] overflow-hidden">
+
+                {/* Animated Background Elements */}
+                <div className="absolute inset-0 pointer-events-none">
+                    {/* Grid Pattern */}
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+                    {/* Floating Orbs - Animated on desktop only */}
+                    <motion.div
+                        animate={prefersReducedMotion ? {} : { y: [0, -20, 0], x: [0, 10, 0] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-20 left-[10%] w-32 md:w-64 h-32 md:h-64 bg-purple-600/20 rounded-full blur-[60px] md:blur-[100px]"
+                    />
+                    <motion.div
+                        animate={prefersReducedMotion ? {} : { y: [0, 15, 0], x: [0, -15, 0] }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute bottom-40 right-[15%] w-40 md:w-80 h-40 md:h-80 bg-blue-600/15 rounded-full blur-[80px] md:blur-[120px]"
+                    />
+                    <motion.div
+                        animate={prefersReducedMotion ? {} : { y: [0, -10, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 w-48 md:w-96 h-48 md:h-96 bg-indigo-600/10 rounded-full blur-[80px] md:blur-[150px]"
+                    />
+
+                    {/* Floating Stars/Particles - Only render on client */}
+                    {isMounted && [
+                        { top: 15, left: 12, speed: 0.3 },
+                        { top: 28, left: 78, speed: 0.5 },
+                        { top: 42, left: 35, speed: 0.2 },
+                        { top: 55, left: 88, speed: 0.4 },
+                        { top: 18, left: 45, speed: 0.6 },
+                        { top: 72, left: 22, speed: 0.3 },
+                        { top: 35, left: 65, speed: 0.5 },
+                        { top: 85, left: 48, speed: 0.2 },
+                        { top: 22, left: 92, speed: 0.4 },
+                        { top: 68, left: 8, speed: 0.6 },
+                        { top: 48, left: 55, speed: 0.3 },
+                        { top: 78, left: 72, speed: 0.5 },
+                        { top: 32, left: 28, speed: 0.4 },
+                        { top: 62, left: 42, speed: 0.2 },
+                        { top: 88, left: 85, speed: 0.5 }
+                    ].map((pos, i) => (
+                        <motion.div
+                            key={i}
+                            animate={prefersReducedMotion ? {} : {
+                                opacity: [0.3, 1, 0.3],
+                            }}
+                            style={{
+                                top: `${pos.top}%`,
+                                left: `${pos.left}%`,
+                                x: mousePos.x * pos.speed * 15,
+                                y: mousePos.y * pos.speed * 15,
+                            }}
+                            transition={{
+                                opacity: {
+                                    duration: 2 + i * 0.3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                },
+                                x: { type: "spring", stiffness: 50, damping: 20 },
+                                y: { type: "spring", stiffness: 50, damping: 20 },
+                            }}
+                            className="absolute w-1 h-1 bg-white rounded-full"
+                        />
+                    ))}
+                </div>
+
+                {/* Main CTA Section */}
+                <div className="relative border-b border-white/5">
+                    <div className="container mx-auto px-4 md:px-6 py-16 md:py-32">
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8"
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-purple-300">
+                                <Sparkles size={12} />
+                                {t.ctaSubtitle}
                             </div>
+
+                            <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95]">
+                                {t.ctaTitle1}
+                                <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
+                                    {t.ctaTitle2}
+                                </span>
+                            </h2>
+
+                            <p className="text-white/40 text-base md:text-lg max-w-xl mx-auto px-4 md:px-0">
+                                {t.ctaDescription}
+                            </p>
+
+                            <motion.button
+                                onClick={() => setBookingProgram({ title: "Consultation Session" })}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="group relative inline-flex items-center gap-2 md:gap-3 px-6 md:px-10 py-4 md:py-5 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-base md:text-lg shadow-2xl shadow-purple-600/30 overflow-hidden"
+                            >
+                                {/* Animated Glow */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+                                <span className="relative z-10">{t.ctaButton}</span>
+                                <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                            </motion.button>
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* Footer Links Section */}
+                <div className="relative container mx-auto px-4 md:px-6 py-12 md:py-16">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+
+                        {/* Brand */}
+                        <div className="col-span-2 lg:col-span-2 space-y-4 md:space-y-6">
+                            <div className="flex items-center gap-3 md:gap-4">
+                                <div className="relative">
+                                    <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl md:rounded-2xl flex items-center justify-center">
+                                        <span className="font-black text-lg md:text-2xl text-white">B</span>
+                                    </div>
+                                    <div className="absolute -inset-1 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl md:rounded-2xl blur-lg opacity-30" />
+                                </div>
+                                <div>
+                                    <h3 className="text-base md:text-xl font-black text-white tracking-tight">{t.brand}</h3>
+                                    <p className="text-[10px] md:text-xs text-white/40">Unlock. Transform. Elevate.</p>
+                                </div>
+                            </div>
+
+                            <p className="text-white/30 text-xs md:text-sm leading-relaxed max-w-sm italic border-l-2 border-purple-500/30 pl-3 md:pl-4 hidden sm:block">
+                                "The universe doesn't give you what you want. It gives you what you become."
+                            </p>
+
+                            <a
+                                href="mailto:lalbirendra34@gmail.com"
+                                className="hidden sm:inline-flex items-center gap-2 md:gap-3 px-4 md:px-5 py-2 md:py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl md:rounded-2xl text-xs md:text-sm text-white/60 hover:text-white transition-all group"
+                            >
+                                <div className="w-6 h-6 md:w-8 md:h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                                    <span className="text-purple-400 text-xs">@</span>
+                                </div>
+                                <span className="text-xs md:text-sm">lalbirendra34@gmail.com</span>
+                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-purple-400" />
+                            </a>
                         </div>
 
-                        {/* Navigation Columns */}
-                        <div className="lg:col-span-3 grid grid-cols-2 gap-8">
-                            <div>
-                                <h6 className="text-[10px] uppercase tracking-[0.5em] text-white font-black mb-6 italic">Genius</h6>
-                                <ul className="space-y-3 text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
-                                    {['Quantum Logic', 'Neural Dev', 'Chess Arch', 'Systems'].map(item => (
-                                        <li key={item} className="hover:text-red-500 cursor-pointer transition-colors">{item}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div>
-                                <h6 className="text-[10px] uppercase tracking-[0.5em] text-white font-black mb-6 italic">Life</h6>
-                                <ul className="space-y-3 text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
-                                    {['Vedic Sync', 'Somatic Flow', 'Artisanry', 'Retreats'].map(item => (
-                                        <li key={item} className="hover:text-blue-500 cursor-pointer transition-colors">{item}</li>
-                                    ))}
-                                </ul>
-                            </div>
+                        {/* Programs */}
+                        <div>
+                            <h6 className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/50 mb-4 md:mb-6 flex items-center gap-2">
+                                <div className="w-1 h-3 md:h-4 bg-gradient-to-b from-purple-500 to-transparent rounded-full" />
+                                {t.programsLabel}
+                            </h6>
+                            <ul className="space-y-2 md:space-y-3">
+                                {[
+                                    { name: 'Occult Sciences', href: '#programs' },
+                                    { name: 'Life Coaching', href: '#programs' },
+                                    { name: 'Academic Excellence', href: '#programs' },
+                                    { name: 'Personal Mentoring', href: '#programs' }
+                                ].map(item => (
+                                    <li key={item.name}>
+                                        <Link href={item.href} className="group flex items-center gap-2 text-xs md:text-sm text-white/40 hover:text-white transition-colors">
+                                            <span className="w-0 group-hover:w-3 h-[1px] bg-purple-500 transition-all duration-300" />
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Company */}
+                        <div>
+                            <h6 className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/50 mb-4 md:mb-6 flex items-center gap-2">
+                                <div className="w-1 h-3 md:h-4 bg-gradient-to-b from-blue-500 to-transparent rounded-full" />
+                                {t.companyLabel}
+                            </h6>
+                            <ul className="space-y-2 md:space-y-3">
+                                {[
+                                    { name: 'About Us', href: '#about' },
+                                    { name: 'Our Philosophy', href: '#features' },
+                                    { name: 'Success Stories', href: '#journey' },
+                                    { name: 'Contact', href: 'mailto:lalbirendra34@gmail.com' }
+                                ].map(item => (
+                                    <li key={item.name}>
+                                        <Link href={item.href} className="group flex items-center gap-2 text-xs md:text-sm text-white/40 hover:text-white transition-colors">
+                                            <span className="w-0 group-hover:w-3 h-[1px] bg-blue-500 transition-all duration-300" />
+                                            {item.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
+                </div>
 
-                    {/* Bottom Bar */}
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-white/5">
-                        <div className="flex gap-8 text-[8px] uppercase tracking-[0.3em] text-white/20 font-black">
-                            <span className="hover:text-white cursor-pointer transition-colors">Privacy Protocol</span>
-                            <span className="hover:text-white cursor-pointer transition-colors">Terms of Engagement</span>
+                {/* Bottom Bar */}
+                <div className="relative border-t border-white/5">
+                    <div className="container mx-auto px-4 md:px-6 py-4 md:py-6 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
+                        <div className="flex items-center gap-3 md:gap-4">
+                            <span className="flex items-center gap-2 text-[10px] md:text-xs text-white/20">
+                                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full animate-pulse" />
+                                All systems operational
+                            </span>
+                            <span className="text-white/10 hidden sm:inline">·</span>
+                            <span className="text-[10px] md:text-xs text-white/20 hidden sm:inline">Delhi, India</span>
                         </div>
-                        <div className="text-[8px] uppercase tracking-[0.4em] text-white/10 font-black">
-                            THETHESIS ORGANIZATION © 2026
+                        <div className="flex items-center gap-4 md:gap-6 text-[10px] md:text-xs text-white/30">
+                            <span className="hidden sm:inline">© 2024 {t.brand}</span>
+                            <span className="sm:hidden">© 2024 {t.brandShort}</span>
+                            <Link href="#" className="hover:text-white transition-colors">{t.privacyPolicy}</Link>
+                            <Link href="#" className="hover:text-white transition-colors">{t.termsOfService}</Link>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
+    );
+}
+
+// --- Enhanced Program Card Component ---
+function ProgramCard({ item, index, color, isComingSoon }: { item: any, index: number, color: "purple" | "blue", isComingSoon?: boolean }) {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+        const { left, top } = currentTarget.getBoundingClientRect();
+        mouseX.set(clientX - left);
+        mouseY.set(clientY - top);
+    }
+
+    const themeColor = color === "purple" ? "text-purple-400" : "text-blue-400";
+    const borderColor = color === "purple" ? "group-hover:border-purple-500/30" : "group-hover:border-blue-500/30";
+    const glowColor = color === "purple" ? "from-purple-500/20" : "from-blue-500/20";
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            onMouseMove={handleMouseMove}
+            className={`group relative p-5 md:p-8 rounded-2xl md:rounded-3xl bg-[#0a0a0a] border border-white/5 ${borderColor} overflow-hidden transition-colors duration-500`}
+        >
+            {/* Spotlight Effect */}
+            <motion.div
+                className="pointer-events-none absolute -inset-px rounded-2xl md:rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100"
+                style={{
+                    background: useMotionTemplate`
+                        radial-gradient(
+                          650px circle at ${mouseX}px ${mouseY}px,
+                          rgba(255,255,255,0.1),
+                          transparent 80%
+                        )
+                      `,
+                }}
+            />
+            {/* Background Gradient Hover */}
+            <div className={`absolute inset-0 bg-gradient-to-r ${glowColor} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`} />
+
+            <div className="relative z-10 flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                        <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 ${themeColor}`}>
+                            {item.level}
+                        </span>
+                        {isComingSoon && (
+                            <span className="flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 text-white/50">
+                                <Lock size={10} /> Locked
+                            </span>
+                        )}
+                    </div>
+
+                    <h3 className="text-lg md:text-2xl font-bold text-white mb-2 group-hover:text-white transition-colors">{item.title}</h3>
+                    <p className="text-white/40 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 group-hover:text-white/60 transition-colors line-clamp-3 md:line-clamp-none">
+                        {item.desc}
+                    </p>
+
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">
+                            <Clock size={12} />
+                            <span>{item.duration}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* Decorative Icon Watermark */}
+                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/5 text-white/20 group-hover:scale-110 group-hover:text-white group-hover:bg-white/10 transition-all duration-500">
+                    {isComingSoon ? <Lock size={20} /> : <Sparkles size={20} />}
+                </div>
+            </div>
+        </motion.div>
+    );
+}
+
+// --- Booking Modal Component ---
+function BookingModal({ program, region, onClose }: { program: any, region: 'IN' | 'INTL', onClose: () => void }) {
+    const subjects = ["Mathematics", "Physics", "Chemistry", "Biology", "English", "Psychology", "Computer Science", "Economics", "Business Studies", "Accountancy"];
+
+    // Country & Currency Logic
+    const [selectedRegion, setSelectedRegion] = useState<'IN' | 'INTL'>(region);
+    const [countryCode, setCountryCode] = useState(region === 'IN' ? "+91" : "+1");
+    const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const price = selectedRegion === 'IN' ? "₹49" : "$6";
+
+    // Common Countries List
+    const countries = [
+        { code: "IN", name: "India", dial: "+91", currency: "INR" },
+        { code: "US", name: "United States", dial: "+1", currency: "USD" },
+        { code: "UK", name: "United Kingdom", dial: "+44", currency: "USD" }, // Using USD for simplicity as per requirement ($6)
+        { code: "AE", name: "UAE", dial: "+971", currency: "USD" },
+        { code: "SG", name: "Singapore", dial: "+65", currency: "USD" },
+        { code: "AU", name: "Australia", dial: "+61", currency: "USD" },
+        { code: "CA", name: "Canada", dial: "+1", currency: "USD" },
+        { code: "FR", name: "France", dial: "+33", currency: "USD" },
+        { code: "DE", name: "Germany", dial: "+49", currency: "USD" },
+        { code: "Other", name: "Other / International", dial: "", currency: "USD" }
+    ];
+
+    const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const country = countries.find(c => c.name === e.target.value);
+        if (country) {
+            setCountryCode(country.dial);
+            setSelectedRegion(country.code === 'IN' ? 'IN' : 'INTL');
+        }
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setTimeout(() => {
+            alert(`Booking Request Sent for ${price}! We will contact you at ${countryCode}...`);
+            setIsSubmitting(false);
+            onClose();
+        }, 1500);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+        >
+            <motion.div
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 10 }}
+                className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xl max-h-[95vh] overflow-y-auto"
+            >
+                {/* Modal Header */}
+                <div className="relative h-32 md:h-48 bg-gradient-to-r from-purple-900/50 to-blue-900/50 flex items-end p-4 md:p-8 shrink-0">
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+                    <button onClick={onClose} className="absolute top-4 md:top-6 right-4 md:right-6 p-2 rounded-full bg-black/20 hover:bg-white/10 text-white transition-colors">
+                        <X size={18} />
+                    </button>
+                    <div className="relative z-10 w-full">
+                        <div className="flex justify-between items-end gap-4">
+                            <div className="flex-1 min-w-0">
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-purple-300 mb-1 md:mb-2 block">Book Your Demo</span>
+                                <h3 className="text-xl md:text-3xl font-black text-white truncate">{program.title}</h3>
+                            </div>
+                            <div className="text-right shrink-0">
+                                <span className="block text-[10px] md:text-xs text-white/50 uppercase tracking-widest mb-1">Limited Offer</span>
+                                <motion.span
+                                    key={price}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="block text-2xl md:text-4xl font-black text-white"
+                                >
+                                    {price}<span className="text-xs md:text-base font-medium text-white/50">/session</span>
+                                </motion.span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Modal Body */}
+                <div className="p-4 md:p-8">
+                    <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                            {/* Personal Info */}
+                            <div className="space-y-1.5 md:space-y-2">
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Full Name</label>
+                                <input type="text" placeholder="John Doe" required className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white placeholder-white/20 focus:outline-none focus:border-purple-500 transition-colors" />
+                            </div>
+                            <div className="space-y-1.5 md:space-y-2">
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Email Address</label>
+                                <input type="email" placeholder="john@example.com" required className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white placeholder-white/20 focus:outline-none focus:border-purple-500 transition-colors" />
+                            </div>
+
+                            {/* Country Selection */}
+                            <div className="space-y-1.5 md:space-y-2">
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Country</label>
+                                <div className="relative">
+                                    <select
+                                        onChange={handleCountryChange}
+                                        defaultValue={region === 'IN' ? "India" : "United States"}
+                                        className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white appearance-none focus:outline-none focus:border-purple-500 transition-colors"
+                                    >
+                                        <option className="bg-[#0a0a0a]" value="" disabled>Select Country</option>
+                                        {countries.map(c => (
+                                            <option key={c.code} value={c.name} className="bg-[#0a0a0a]">{c.name}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronRight className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 rotate-90 text-white/30 pointer-events-none" size={14} />
+                                </div>
+                            </div>
+
+                            {/* Phone with Country Code */}
+                            <div className="space-y-1.5 md:space-y-2">
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Phone Number</label>
+                                <div className="flex gap-2">
+                                    <div className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-2 md:px-3 py-2.5 md:py-3 text-sm md:text-base text-white/60 min-w-[60px] md:min-w-[70px] flex items-center justify-center select-none cursor-not-allowed">
+                                        {countryCode}
+                                    </div>
+                                    <input type="tel" placeholder="123 456 7890" required className="flex-1 bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white placeholder-white/20 focus:outline-none focus:border-purple-500 transition-colors" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Subject Selection */}
+                        <div className="space-y-2 md:space-y-3">
+                            <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Select Subject Focus</label>
+                            <div className="flex flex-wrap gap-1.5 md:gap-2">
+                                {subjects.map((sub) => (
+                                    <button
+                                        key={sub}
+                                        type="button"
+                                        onClick={() => setSelectedSubject(sub)}
+                                        className={`px-2.5 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${selectedSubject === sub
+                                            ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/30'
+                                            : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                                            }`}
+                                    >
+                                        {sub}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full py-3 md:py-4 mt-4 md:mt-6 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-base md:text-lg hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-purple-600/20"
+                        >
+                            {isSubmitting ? "Confirming..." : `Confirm Booking • ${price}`}
+                        </button>
+
+                        <p className="text-center text-xs text-white/30">
+                            By booking, you agree to our Terms of Service.
+                        </p>
+                    </form>
+                </div>
+            </motion.div>
+        </motion.div>
     );
 }
