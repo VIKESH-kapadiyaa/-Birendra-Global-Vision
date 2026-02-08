@@ -372,40 +372,69 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
             onMouseMove={handleMouseMove}
             onMouseEnter={() => onHover(true)}
             onMouseLeave={() => { x.set(0); y.set(0); onHover(false); }}
-            className={`relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] h-[320px] sm:h-[380px] md:h-[540px] group transition-all duration-700 ${isActive ? 'scale-100 md:scale-105' : 'scale-95 opacity-50 grayscale sm:grayscale-0'}`}
+            className={`relative w-full max-w-[340px] sm:max-w-[320px] md:max-w-[400px] h-auto min-h-[180px] sm:min-h-[320px] md:min-h-[540px] group transition-all duration-700 ${isActive ? 'scale-100 md:scale-105' : 'scale-95 opacity-50'}`}
         >
-            <div className={`absolute -inset-4 rounded-[3rem] bg-gradient-to-br ${themeColor} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
+            <div className={`absolute -inset-4 rounded-[2rem] sm:rounded-[3rem] bg-gradient-to-br ${themeColor} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
 
-            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] p-4 sm:p-6 md:p-12 flex flex-col justify-between overflow-hidden">
+            <div className="relative h-full w-full bg-black/40 backdrop-blur-3xl border border-white/10 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] p-4 sm:p-6 md:p-12 flex flex-col overflow-hidden">
+                {/* Mobile Layout - Horizontal compact */}
+                <div className="flex sm:hidden items-center gap-3">
+                    <div className={`p-2.5 rounded-xl bg-gradient-to-br ${themeColor} text-white shadow-xl flex-shrink-0`}>
+                        <Icon size={22} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-black text-white tracking-tight leading-none mb-0.5">{title}</h3>
+                        <p className="text-[8px] text-white/40 uppercase tracking-[0.15em] font-bold">{subtitle}</p>
+                    </div>
+                    <div className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all flex-shrink-0">
+                        <ArrowRight size={14} />
+                    </div>
+                </div>
+
+                {/* Mobile Features - Horizontal pills */}
+                <div className="flex sm:hidden flex-wrap gap-1.5 mt-3">
+                    {features.slice(0, 3).map((f: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 text-[9px] bg-white/5 rounded-full text-white/50 border border-white/5">
+                            {f}
+                        </span>
+                    ))}
+                    {features.length > 3 && (
+                        <span className="px-2 py-0.5 text-[9px] bg-white/5 rounded-full text-white/40 border border-white/5">
+                            +{features.length - 3}
+                        </span>
+                    )}
+                </div>
+
+                {/* Desktop/Tablet Layout - Original vertical */}
                 <motion.div
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="z-10"
+                    className="z-10 hidden sm:block"
                 >
-                    <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-12">
-                        <div className={`p-2.5 sm:p-3 md:p-5 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
-                            <Icon size={20} className="sm:w-6 sm:h-6 md:w-9 md:h-9" />
+                    <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-12">
+                        <div className={`p-3 md:p-5 rounded-xl md:rounded-2xl bg-gradient-to-br ${themeColor} text-white shadow-2xl`}>
+                            <Icon size={24} className="md:w-9 md:h-9" />
                         </div>
                         <div>
-                            <h3 className="text-lg sm:text-xl md:text-3xl font-black text-white tracking-tighter leading-none mb-0.5 sm:mb-1 md:mb-2">{title}</h3>
-                            <p className="text-[7px] sm:text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] font-bold">{subtitle}</p>
+                            <h3 className="text-xl md:text-3xl font-black text-white tracking-tighter leading-none mb-1 md:mb-2">{title}</h3>
+                            <p className="text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.2em] md:tracking-[0.3em] font-bold">{subtitle}</p>
                         </div>
                     </div>
 
-                    <div className="space-y-2 sm:space-y-3 md:space-y-6">
+                    <div className="space-y-3 md:space-y-6">
                         {features.map((f: string, i: number) => (
-                            <div key={i} className="flex items-center gap-2 sm:gap-3 md:gap-4 text-white/40 text-[10px] sm:text-xs md:text-sm group-hover:text-white/80 transition-colors">
-                                <div className="w-1 sm:w-1.5 h-[1px] bg-white/20" />
+                            <div key={i} className="flex items-center gap-3 md:gap-4 text-white/40 text-xs md:text-sm group-hover:text-white/80 transition-colors">
+                                <div className="w-1.5 h-[1px] bg-white/20" />
                                 {f}
                             </div>
                         ))}
                     </div>
                 </motion.div>
 
-                <div className="relative z-10 flex items-center justify-between mt-auto pt-4 sm:pt-6 md:pt-8 border-t border-white/5">
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">Enter</span>
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
-                        <ArrowRight size={14} className="sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />
+                <div className="relative z-10 hidden sm:flex items-center justify-between mt-auto pt-6 md:pt-8 border-t border-white/5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">Enter</span>
+                    <div className="w-9 md:w-10 h-9 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                        <ArrowRight size={16} className="md:w-[18px] md:h-[18px]" />
                     </div>
                 </div>
 
@@ -567,15 +596,15 @@ export default function App() {
                     <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-blue-600/10 blur-[80px] rounded-full" />
                 </div>
 
-                <div className="text-center mb-16 max-w-7xl mx-auto relative z-10">
+                <div className="text-center mb-8 sm:mb-12 md:mb-16 max-w-7xl mx-auto relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="inline-flex items-center gap-4 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12 hover:bg-white/10 transition-colors cursor-default"
+                        className="inline-flex items-center gap-2 sm:gap-4 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 sm:mb-8 md:mb-12 hover:bg-white/10 transition-colors cursor-default"
                     >
-                        <span className={`w-2 h-2 rounded-full ${hoveredHub === 'genius' ? 'bg-purple-500 shadow-[0_0_10px_#a855f7]' : hoveredHub === 'life' ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 'bg-white/50'}`} />
-                        <span className="text-xs uppercase tracking-[0.2em] text-white/60 font-medium">{t.heroSubtitle}</span>
+                        <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${hoveredHub === 'genius' ? 'bg-purple-500 shadow-[0_0_10px_#a855f7]' : hoveredHub === 'life' ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 'bg-white/50'}`} />
+                        <span className="text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white/60 font-medium">{t.heroSubtitle}</span>
                     </motion.div>
 
                     <motion.h1
@@ -607,7 +636,7 @@ export default function App() {
                     </motion.p>
                 </div>
 
-                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-2 sm:px-4 md:px-6 perspective-1000">
+                <div className="relative flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-4 sm:px-4 md:px-6 perspective-1000">
                     <div className="flex-1 flex justify-center lg:justify-end">
                         <GatewayCard
                             title="Genius Hub"
