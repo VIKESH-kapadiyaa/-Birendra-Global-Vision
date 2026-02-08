@@ -250,18 +250,18 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 const SectionHeader = ({ subtitle, title, align = "left" }: { subtitle: string, title: string, align?: "left" | "center" }) => (
-    <div className={`mb-12 md:mb-24 ${align === "center" ? "text-center" : "text-left"}`}>
+    <div className={`mb-8 sm:mb-12 md:mb-24 ${align === "center" ? "text-center" : "text-left"}`}>
         <motion.span
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            className="text-[10px] uppercase tracking-[0.4em] md:tracking-[0.6em] text-white/30 font-black mb-4 md:mb-6 block"
+            className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] md:tracking-[0.6em] text-white/30 font-black mb-2 sm:mb-4 md:mb-6 block"
         >
             {subtitle}
         </motion.span>
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-5xl lg:text-7xl font-black italic tracking-tighter uppercase leading-[0.85]"
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black italic tracking-tighter uppercase leading-[0.85]"
         >
             {title}
         </motion.h2>
@@ -685,7 +685,7 @@ export default function App() {
             </motion.section>
 
             {/* FOUNDER STORY SECTION */}
-            <section id="about" className="relative z-10 py-16 md:py-32 px-4 md:px-6 bg-[#030303] overflow-hidden">
+            <section id="about" className="relative z-10 py-12 sm:py-16 md:py-32 px-3 sm:px-4 md:px-6 bg-[#030303] overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(88,28,135,0.1),transparent_70%)]" />
 
                 <div className="container mx-auto max-w-7xl relative">
@@ -693,18 +693,18 @@ export default function App() {
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-white/[0.02] backdrop-blur-2xl p-4 sm:p-8 md:p-16 overflow-hidden relative"
+                        className="rounded-2xl sm:rounded-[2rem] md:rounded-[4rem] border border-white/10 bg-white/[0.02] backdrop-blur-2xl p-4 sm:p-8 md:p-16 overflow-hidden relative"
                     >
                         {/* Decorative background elements */}
-                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-                        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+                        <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-purple-600/10 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                        <div className="absolute bottom-0 left-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[80px] sm:blur-[100px] translate-y-1/2 -translate-x-1/2" />
 
-                        <div className="grid lg:grid-cols-12 gap-8 md:gap-12 items-center relative z-10">
+                        <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 md:gap-12 items-center relative z-10">
                             {/* Photo Column */}
                             <div className="lg:col-span-5 order-2 lg:order-1">
-                                <div className="relative mx-auto max-w-[280px] sm:max-w-[350px] md:max-w-[400px]">
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-[3rem] blur-lg opacity-40 transform rotate-3 scale-105" />
-                                    <div className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0a0a0a]">
+                                <div className="relative mx-auto max-w-[220px] sm:max-w-[280px] md:max-w-[400px]">
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-2xl sm:rounded-[3rem] blur-lg opacity-40 transform rotate-3 scale-105" />
+                                    <div className="relative rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0a0a0a]">
                                         <div className="aspect-[3/4] relative">
                                             <img
                                                 src="/maam.jpeg"
@@ -790,11 +790,11 @@ export default function App() {
             </section>
 
             {/* PLATFORM FEATURES */}
-            <section id="features" className="relative z-10 py-16 md:py-32 px-4 md:px-6 bg-[#050505] border-y border-white/5">
+            <section id="features" className="relative z-10 py-12 sm:py-16 md:py-32 px-3 sm:px-4 md:px-6 bg-[#050505] border-y border-white/5">
                 <div className="container mx-auto max-w-7xl">
                     <SectionHeader subtitle={t.featuresSubtitle} title={t.featuresTitle} />
 
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-6">
                         {FEATURES.map((feat, i) => (
                             <motion.div
                                 key={i}
@@ -803,29 +803,29 @@ export default function App() {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                whileHover={{ y: -10 }}
-                                className="group relative p-4 md:p-8 h-full rounded-[1.5rem] md:rounded-[2.5rem] bg-[#080808] border border-white/5 hover:border-white/10 cursor-pointer overflow-hidden transition-all duration-300"
+                                transition={{ delay: i * 0.05 }}
+                                whileHover={{ y: -5 }}
+                                className="group relative p-3 sm:p-4 md:p-8 min-h-[140px] sm:min-h-[180px] md:min-h-0 h-full rounded-xl sm:rounded-2xl md:rounded-[2.5rem] bg-[#080808] border border-white/5 hover:border-white/10 cursor-pointer overflow-hidden transition-all duration-300"
                             >
                                 {/* Hover Gradient */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-transparent to-blue-500/0 group-hover:from-purple-500/5 group-hover:to-blue-500/5 transition-all duration-500" />
 
                                 <div className="relative z-10 flex flex-col h-full">
-                                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-white/40 mb-4 md:mb-6 group-hover:text-white group-hover:bg-white/10 group-hover:scale-110 transition-all duration-300">
-                                        {feat.icon}
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-white/5 flex items-center justify-center text-white/40 mb-2 sm:mb-4 md:mb-6 group-hover:text-white group-hover:bg-white/10 transition-all duration-300">
+                                        <div className="scale-75 sm:scale-90 md:scale-100">{feat.icon}</div>
                                     </div>
 
-                                    <h4 className="text-sm md:text-xl font-bold mb-2 md:mb-4 tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/70 transition-all">
+                                    <h4 className="text-xs sm:text-sm md:text-xl font-bold mb-1 sm:mb-2 md:mb-4 tracking-tight text-white leading-tight">
                                         {feat.title}
                                     </h4>
 
-                                    <p className="text-white/40 text-xs md:text-sm leading-relaxed mb-4 md:mb-6 flex-grow line-clamp-3 md:line-clamp-none">
+                                    <p className="text-white/40 text-[10px] sm:text-xs md:text-sm leading-relaxed mb-2 sm:mb-4 md:mb-6 flex-grow line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
                                         {feat.desc}
                                     </p>
 
-                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-purple-400 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                    <div className="hidden sm:flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-purple-400 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                                         <span>Discover</span>
-                                        <ChevronRight size={14} />
+                                        <ChevronRight size={12} className="sm:w-[14px] sm:h-[14px]" />
                                     </div>
                                 </div>
                             </motion.div>
@@ -835,11 +835,11 @@ export default function App() {
             </section>
 
             {/* THE JOURNEY / PROCESS SECTION */}
-            <section id="journey" className="relative z-10 py-16 md:py-32 px-4 md:px-6">
+            <section id="journey" className="relative z-10 py-12 sm:py-16 md:py-32 px-3 sm:px-4 md:px-6">
                 <div className="container mx-auto max-w-7xl">
                     <SectionHeader subtitle={t.journeySubtitle} title={t.journeyTitle} align="center" />
 
-                    <div className="relative grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    <div className="relative grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8">
                         {/* Connecting Line (Desktop) */}
                         <div className="absolute top-12 left-0 w-full h-[2px] bg-gradient-to-r from-purple-900/0 via-purple-500/20 to-blue-900/0 hidden md:block" />
 
@@ -849,20 +849,20 @@ export default function App() {
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: i * 0.2 }}
+                                transition={{ delay: i * 0.1 }}
                                 className="relative group"
                             >
                                 <div className="relative z-10 flex flex-col items-center text-center">
-                                    <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-4 md:mb-8 relative group-hover:border-purple-500/50 transition-colors duration-500">
-                                        <div className="absolute inset-1 md:inset-2 rounded-full border border-white/5 border-dashed animate-[spin_10s_linear_infinite]" />
-                                        <span className="text-xl md:text-3xl font-black text-white/20 group-hover:text-white transition-colors duration-500">{step.step}</span>
-                                        <div className="absolute -bottom-2 md:-bottom-3 px-2 md:px-3 py-0.5 md:py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/5 text-[10px] md:text-xs font-bold text-white shadow-xl">
-                                            {step.icon}
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-full bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-3 sm:mb-4 md:mb-8 relative group-hover:border-purple-500/50 transition-colors duration-500">
+                                        <div className="absolute inset-0.5 sm:inset-1 md:inset-2 rounded-full border border-white/5 border-dashed animate-[spin_10s_linear_infinite]" />
+                                        <span className="text-lg sm:text-xl md:text-3xl font-black text-white/20 group-hover:text-white transition-colors duration-500">{step.step}</span>
+                                        <div className="absolute -bottom-1.5 sm:-bottom-2 md:-bottom-3 px-1.5 sm:px-2 md:px-3 py-0.5 md:py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/5 text-[8px] sm:text-[10px] md:text-xs font-bold text-white shadow-xl">
+                                            <div className="scale-75 sm:scale-90 md:scale-100">{step.icon}</div>
                                         </div>
                                     </div>
 
-                                    <h4 className="text-base md:text-2xl font-bold text-white mb-2 md:mb-4">{step.title}</h4>
-                                    <p className="text-white/40 text-xs md:text-sm leading-relaxed max-w-[200px] md:max-w-[250px] mx-auto">
+                                    <h4 className="text-xs sm:text-base md:text-2xl font-bold text-white mb-1 sm:mb-2 md:mb-4">{step.title}</h4>
+                                    <p className="text-white/40 text-[10px] sm:text-xs md:text-sm leading-relaxed max-w-[140px] sm:max-w-[200px] md:max-w-[250px] mx-auto line-clamp-2 sm:line-clamp-none">
                                         {step.desc}
                                     </p>
                                 </div>
@@ -873,13 +873,13 @@ export default function App() {
             </section>
 
             {/* PROGRAMS SECTION */}
-            <section id="programs" className="relative z-10 py-16 md:py-48 px-4 md:px-6 bg-[#050505] border-y border-white/5 overflow-hidden">
+            <section id="programs" className="relative z-10 py-12 sm:py-16 md:py-48 px-3 sm:px-4 md:px-6 bg-[#050505] border-y border-white/5 overflow-hidden">
                 {/* Background Ambient Glow */}
-                <div className="absolute top-1/2 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-purple-600/10 blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
-                <div className="absolute top-1/2 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-blue-600/10 blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
+                <div className="absolute top-1/2 left-0 w-[200px] sm:w-[300px] md:w-[500px] h-[200px] sm:h-[300px] md:h-[500px] bg-purple-600/10 blur-[80px] sm:blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
+                <div className="absolute top-1/2 right-0 w-[200px] sm:w-[300px] md:w-[500px] h-[200px] sm:h-[300px] md:h-[500px] bg-blue-600/10 blur-[80px] sm:blur-[100px] md:blur-[150px] -translate-y-1/2 pointer-events-none" />
 
                 <div className="container mx-auto max-w-7xl">
-                    <div className="grid lg:grid-cols-2 gap-12 md:gap-24 relative">
+                    <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-24 relative">
                         {/* Central Divider (Desktop) */}
                         <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent hidden lg:block" />
 
