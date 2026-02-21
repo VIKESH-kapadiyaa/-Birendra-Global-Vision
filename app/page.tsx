@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence, useMotionTemplate, useReducedMotion } from 'framer-motion';
 import { useLanguage } from './contexts/LanguageContext';
@@ -47,114 +47,11 @@ import {
     X
 } from 'lucide-react';
 
-// --- Constants & Data ---
-const GEMS = [
-    { id: 1, icon: <BookOpen size={20} />, label: "Learn", x: "12%", y: "15%", speed: 0.05 },
-    { id: 2, icon: <Brain size={20} />, label: "Grow", x: "85%", y: "12%", speed: 0.03 },
-    { id: 3, icon: <Star size={20} />, label: "Shine", x: "8%", y: "80%", speed: 0.04 },
-    { id: 4, icon: <Heart size={20} />, label: "Care", x: "90%", y: "75%", speed: 0.06 },
-    { id: 5, icon: <InfinityIcon size={20} />, label: "Evolve", x: "50%", y: "8%", speed: 0.02 },
-];
-
-const PROGRAMS = {
-    genius: [
-        {
-            title: "Occult Sciences",
-            level: "All Levels",
-            duration: "Flexible",
-            desc: "Dive into the mysteries of the universe. Master the ancient arts of Astrology, Numerology, Tarot, and Vastu Shastra to decode destiny and align your life with cosmic rhythms."
-        },
-        {
-            title: "Life Coaching",
-            level: "Personal",
-            duration: "Ongoing",
-            desc: "Transform obstacles into stepping stones. Through deep introspection and strategic guidance, help you break limiting patterns, gain crystal-clear clarity, and design a life of purpose and power."
-        },
-        {
-            title: "Mentoring Programs",
-            level: "Growth",
-            duration: "Custom",
-            desc: "A bespoke journey of self-discovery. Whether you're a student, professional, or seeker, our 1:1 mentorship unlocks your latent potential, shapes your vision, and accelerates your personal evolution."
-        }
-    ],
-    life: [
-        {
-            title: "Academic Support",
-            level: "All Ages",
-            duration: "Flexible",
-            desc: "Comprehensive academic excellence for K-12 students. Expert tutoring in Mathematics, Science, and Languages designed to build strong foundations and boost exam confidence."
-        },
-        {
-            title: "Skill Development",
-            level: "Beginner",
-            duration: "Ongoing",
-            desc: "Equip yourself for the future. From public speaking and critical thinking to digital literacy, we nurture the essential skills that define 21st-century leaders."
-        },
-        {
-            title: "Holistic Learning",
-            level: "All Levels",
-            duration: "Custom",
-            desc: "Education beyond textbooks. Our integrated curriculum fosters emotional intelligence, mindfulness, and creative expression for truly balanced growth."
-        }
-    ]
-};
-
-const FEATURES = [
-    {
-        icon: <Globe size={24} />,
-        title: "Learning Without Borders",
-        desc: "Quality education and guidance for learners across the world, breaking barriers of distance, age, and background.",
-        details: "We believe knowledge should have no boundaries. Our platform connects students and seekers from every corner of the globe—USA, UK, India, Singapore, and beyond—offering a seamless, high-quality learning experience that feels just as personal as sitting in the same room."
-    },
-    {
-        icon: <Award size={24} />,
-        title: "20+ Years of Excellence",
-        desc: "Led by an experienced educator with deep academic and leadership expertise from prestigious institutions.",
-        details: "Our foundation is built on decades of real-world educational leadership. With a legacy of guiding students at top-tier institutions, we bring a level of pedagogical mastery, discipline, and insight that generic tutoring platforms simply cannot match."
-    },
-    {
-        icon: <Users size={24} />,
-        title: "One-to-One Personalized",
-        desc: "Every learner is unique. Our programs offer individual attention, customized paths, and focused mentoring.",
-        details: "Crowded classrooms leave talent behind. Our 1:1 mentorship model ensures that 100% of our focus is on YOU. We analyze your learning style, pace, and goals to create a hyper-personalized roadmap that guarantees progress."
-    },
-    {
-        icon: <Layers size={24} />,
-        title: "Holistic Programs",
-        desc: "From academics to occult sciences, and from life coaching to mentoring—supporting complete growth.",
-        details: "Success is multidimensional. Unlike traditional platforms that focus only on grades, we nurture the whole individual. Whether it's mastering Mathematics, understanding your destiny through Astrology, or finding life purpose, we provide the tools for complete evolution."
-    }
-];
-
-const THE_PROCESS = [
-    {
-        step: "01",
-        title: "Discovery",
-        desc: "We begin by understanding you. Through an initial deep-dive consultation, we identify your unique strengths, challenges, and aspirations.",
-        icon: <Compass size={32} />
-    },
-    {
-        step: "02",
-        title: "Strategy",
-        desc: "Amaira crafts a bespoke learning path for you, blending academic rigor with spiritual insights tailored to your personal blueprint.",
-        icon: <MapPin size={32} />
-    },
-    {
-        step: "03",
-        title: "Growth",
-        desc: "Engage in vivid, one-on-one sessions. Whether it's mastering a subject or unlocking intuitive powers, you learn at your own pace.",
-        icon: <Zap size={32} />
-    },
-    {
-        step: "04",
-        title: "Evolution",
-        desc: "Knowledge becomes wisdom. You emerge not just with better grades or skills, but with clarity, confidence, and a higher sense of purpose.",
-        icon: <Star size={32} />
-    }
-];
+// --- Constants & Data (now generated inside components using translations) ---
 
 // --- Feature Modal Component ---
-const FeatureModal = ({ feature, onClose }: { feature: typeof FEATURES[0] | null, onClose: () => void }) => {
+type FeatureItem = { icon: React.ReactNode; title: string; desc: string; details: string };
+const FeatureModal = ({ feature, onClose }: { feature: FeatureItem | null, onClose: () => void }) => {
     const { t } = useLanguage();
     if (!feature) return null;
     return (
@@ -352,7 +249,7 @@ const ComingSoonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 
 
 
-const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHover, isActive, href, onClick }: any) => {
+const GatewayCard = ({ title, subtitle, enterLabel, icon: Icon, features, themeColor, onHover, isActive, href, onClick }: any) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const mouseXSpring = useSpring(x);
@@ -432,7 +329,7 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
                 </motion.div>
 
                 <div className="relative z-10 hidden sm:flex items-center justify-between mt-auto pt-6 md:pt-8 border-t border-white/5">
-                    <span className="text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">Enter</span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-white/30 group-hover:text-white transition-colors">{enterLabel}</span>
                     <div className="w-9 md:w-10 h-9 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                         <ArrowRight size={16} className="md:w-[18px] md:h-[18px]" />
                     </div>
@@ -457,11 +354,47 @@ const GatewayCard = ({ title, subtitle, icon: Icon, features, themeColor, onHove
 
 export default function App() {
     const { t } = useLanguage();
+
+    // Translated data arrays (re-computed when language changes)
+    const GEMS = [
+        { id: 1, icon: <BookOpen size={20} />, label: t.gemLearn, x: "12%", y: "15%", speed: 0.05 },
+        { id: 2, icon: <Brain size={20} />, label: t.gemGrow, x: "85%", y: "12%", speed: 0.03 },
+        { id: 3, icon: <Star size={20} />, label: t.gemShine, x: "8%", y: "80%", speed: 0.04 },
+        { id: 4, icon: <Heart size={20} />, label: t.gemCare, x: "90%", y: "75%", speed: 0.06 },
+        { id: 5, icon: <InfinityIcon size={20} />, label: t.gemEvolve, x: "50%", y: "8%", speed: 0.02 },
+    ];
+
+    const PROGRAMS = {
+        genius: [
+            { title: t.occultSciencesTitle, level: t.occultSciencesLevel, duration: t.occultSciencesDuration, desc: t.occultSciencesDesc },
+            { title: t.lifeCoachingTitle, level: t.lifeCoachingLevel, duration: t.lifeCoachingDuration, desc: t.lifeCoachingDesc },
+            { title: t.mentoringTitle, level: t.mentoringLevel, duration: t.mentoringDuration, desc: t.mentoringDesc },
+        ],
+        life: [
+            { title: t.academicSupportTitle, level: t.academicSupportLevel, duration: t.academicSupportDuration, desc: t.academicSupportDesc },
+            { title: t.skillDevTitle, level: t.skillDevLevel, duration: t.skillDevDuration, desc: t.skillDevDesc },
+            { title: t.holisticLearningTitle, level: t.holisticLearningLevel, duration: t.holisticLearningDuration, desc: t.holisticLearningDesc },
+        ],
+    };
+
+    const FEATURES = [
+        { icon: <Globe size={24} />, title: t.feature1Title, desc: t.feature1Desc, details: t.feature1Details },
+        { icon: <Award size={24} />, title: t.feature2Title, desc: t.feature2Desc, details: t.feature2Details },
+        { icon: <Users size={24} />, title: t.feature3Title, desc: t.feature3Desc, details: t.feature3Details },
+        { icon: <Layers size={24} />, title: t.feature4Title, desc: t.feature4Desc, details: t.feature4Details },
+    ];
+
+    const THE_PROCESS = [
+        { step: "01", title: t.step1Title, desc: t.step1Desc, icon: <Compass size={32} /> },
+        { step: "02", title: t.step2Title, desc: t.step2Desc, icon: <MapPin size={32} /> },
+        { step: "03", title: t.step3Title, desc: t.step3Desc, icon: <Zap size={32} /> },
+        { step: "04", title: t.step4Title, desc: t.step4Desc, icon: <Star size={32} /> },
+    ];
     const [isLoading, setIsLoading] = useState(true);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [hoveredHub, setHoveredHub] = useState<string | null>(null);
     const [showComingSoon, setShowComingSoon] = useState(false);
-    const [selectedFeature, setSelectedFeature] = useState<typeof FEATURES[0] | null>(null);
+    const [selectedFeature, setSelectedFeature] = useState<FeatureItem | null>(null);
     const [bookingProgram, setBookingProgram] = useState<any | null>(null);
     const [userRegion, setUserRegion] = useState<'IN' | 'INTL'>('INTL');
     const [isMounted, setIsMounted] = useState(false);
@@ -631,21 +564,21 @@ export default function App() {
                         transition={{ delay: 0.8 }}
                         className="text-white/40 max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed px-4 md:px-0"
                     >
-                        Education that transcends boundaries. <br className="hidden md:block" />
-                        <span className={hoveredHub === 'genius' ? 'text-purple-400' : 'text-white/60'}>Occult Sciences</span> & <span className={hoveredHub === 'life' ? 'text-blue-400' : 'text-white/60'}>Academic Excellence</span>.
+                        {t.heroDescription}
                     </motion.p>
                 </div>
 
                 <div className="relative flex flex-col lg:flex-row items-center justify-center gap-3 sm:gap-6 md:gap-8 lg:gap-24 w-full max-w-[1400px] px-4 sm:px-4 md:px-6 perspective-1000">
                     <div className="flex-1 flex justify-center lg:justify-end">
                         <GatewayCard
-                            title="Genius Hub"
-                            subtitle="Transform & Empower"
+                            title={t.geniusHubTitle}
+                            subtitle={t.geniusHubSubtitle}
+                            enterLabel={t.enterButton}
                             icon={Sparkles}
                             isActive={hoveredHub === 'genius' || !hoveredHub}
                             themeColor="from-purple-600 via-violet-600 to-indigo-600"
                             onHover={(h: boolean) => setHoveredHub(h ? 'genius' : null)}
-                            features={["Occult Sciences", "Spiritual Wisdom", "Life Coaching", "Inner Growth"]}
+                            features={[t.geniusFeature1, t.geniusFeature2, t.geniusFeature3]}
                             href="/genius-hub"
                         />
                     </div>
@@ -657,13 +590,14 @@ export default function App() {
 
                     <div className="flex-1 flex justify-center lg:justify-start">
                         <GatewayCard
-                            title="Life Hub"
-                            subtitle="Academic Excellence"
+                            title={t.lifeHubTitle}
+                            subtitle={t.lifeHubSubtitle}
+                            enterLabel={t.enterButton}
                             icon={GraduationCap}
                             isActive={hoveredHub === 'life' || !hoveredHub}
                             themeColor="from-blue-600 via-indigo-600 to-cyan-600"
                             onHover={(h: boolean) => setHoveredHub(h ? 'life' : null)}
-                            features={["Academic Support", "Skill Building", "Mentorship", "Global Curriculum"]}
+                            features={[t.lifeFeature1, t.lifeFeature2, t.lifeFeature3]}
                             onClick={() => setShowComingSoon(true)}
                         />
                     </div>
@@ -824,7 +758,7 @@ export default function App() {
                                     </p>
 
                                     <div className="hidden sm:flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-purple-400 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                                        <span>Discover</span>
+                                        <span>{t.discoverButton}</span>
                                         <ChevronRight size={12} className="sm:w-[14px] sm:h-[14px]" />
                                     </div>
                                 </div>
@@ -896,7 +830,7 @@ export default function App() {
                             <div className="space-y-4 md:space-y-8">
                                 {PROGRAMS.genius.map((item, i) => (
                                     <div key={i} onClick={() => setBookingProgram(item)} className="cursor-pointer">
-                                        <ProgramCard item={item} index={i} color="purple" />
+                                        <ProgramCard item={item} index={i} color="purple" lockedLabel={t.locked} />
                                     </div>
                                 ))}
                             </div>
@@ -915,7 +849,7 @@ export default function App() {
                             <div className="space-y-4 md:space-y-8">
                                 {PROGRAMS.life.map((item, i) => (
                                     <div key={i} onClick={() => setBookingProgram(item)} className="cursor-pointer">
-                                        <ProgramCard item={item} index={i} color="blue" isComingSoon />
+                                        <ProgramCard item={item} index={i} color="blue" isComingSoon lockedLabel={t.locked} />
                                     </div>
                                 ))}
                             </div>
@@ -1143,7 +1077,7 @@ export default function App() {
 }
 
 // --- Enhanced Program Card Component ---
-function ProgramCard({ item, index, color, isComingSoon }: { item: any, index: number, color: "purple" | "blue", isComingSoon?: boolean }) {
+function ProgramCard({ item, index, color, isComingSoon, lockedLabel }: { item: any, index: number, color: "purple" | "blue", isComingSoon?: boolean, lockedLabel?: string }) {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -1190,7 +1124,7 @@ function ProgramCard({ item, index, color, isComingSoon }: { item: any, index: n
                         </span>
                         {isComingSoon && (
                             <span className="flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 text-white/50">
-                                <Lock size={10} /> Locked
+                                <Lock size={10} /> {lockedLabel}
                             </span>
                         )}
                     </div>
@@ -1220,7 +1154,8 @@ function ProgramCard({ item, index, color, isComingSoon }: { item: any, index: n
 
 // --- Booking Modal Component ---
 function BookingModal({ program, region, onClose }: { program: any, region: 'IN' | 'INTL', onClose: () => void }) {
-    const subjects = ["Mathematics", "Physics", "Chemistry", "Biology", "English", "Psychology", "Computer Science", "Economics", "Business Studies", "Accountancy"];
+    const { t } = useLanguage();
+    const subjects = [t.subjectMath, "Physics", "Chemistry", "Biology", t.subjectEnglish, "Psychology", "Computer Science", "Economics", "Business Studies", "Accountancy"];
 
     // Country & Currency Logic
     const [selectedRegion, setSelectedRegion] = useState<'IN' | 'INTL'>(region);
@@ -1284,18 +1219,18 @@ function BookingModal({ program, region, onClose }: { program: any, region: 'IN'
                     <div className="relative z-10 w-full">
                         <div className="flex justify-between items-end gap-4">
                             <div className="flex-1 min-w-0">
-                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-purple-300 mb-1 md:mb-2 block">Book Your Demo</span>
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-purple-300 mb-1 md:mb-2 block">{t.bookYourDemo}</span>
                                 <h3 className="text-xl md:text-3xl font-black text-white truncate">{program.title}</h3>
                             </div>
                             <div className="text-right shrink-0">
-                                <span className="block text-[10px] md:text-xs text-white/50 uppercase tracking-widest mb-1">Limited Offer</span>
+                                <span className="block text-[10px] md:text-xs text-white/50 uppercase tracking-widest mb-1">{t.limitedOffer}</span>
                                 <motion.span
                                     key={price}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className="block text-2xl md:text-4xl font-black text-white"
                                 >
-                                    {price}<span className="text-xs md:text-base font-medium text-white/50">/session</span>
+                                    {price}<span className="text-xs md:text-base font-medium text-white/50">{t.perSession}</span>
                                 </motion.span>
                             </div>
                         </div>
@@ -1308,24 +1243,24 @@ function BookingModal({ program, region, onClose }: { program: any, region: 'IN'
                         <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                             {/* Personal Info */}
                             <div className="space-y-1.5 md:space-y-2">
-                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Full Name</label>
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">{t.fullName}</label>
                                 <input type="text" placeholder="John Doe" required className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white placeholder-white/20 focus:outline-none focus:border-purple-500 transition-colors" />
                             </div>
                             <div className="space-y-1.5 md:space-y-2">
-                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Email Address</label>
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">{t.emailAddress}</label>
                                 <input type="email" placeholder="john@example.com" required className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white placeholder-white/20 focus:outline-none focus:border-purple-500 transition-colors" />
                             </div>
 
                             {/* Country Selection */}
                             <div className="space-y-1.5 md:space-y-2">
-                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Country</label>
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">{t.country}</label>
                                 <div className="relative">
                                     <select
                                         onChange={handleCountryChange}
                                         defaultValue={region === 'IN' ? "India" : "United States"}
                                         className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-white appearance-none focus:outline-none focus:border-purple-500 transition-colors"
                                     >
-                                        <option className="bg-[#0a0a0a]" value="" disabled>Select Country</option>
+                                        <option className="bg-[#0a0a0a]" value="" disabled>{t.selectCountry}</option>
                                         {countries.map(c => (
                                             <option key={c.code} value={c.name} className="bg-[#0a0a0a]">{c.name}</option>
                                         ))}
@@ -1336,7 +1271,7 @@ function BookingModal({ program, region, onClose }: { program: any, region: 'IN'
 
                             {/* Phone with Country Code */}
                             <div className="space-y-1.5 md:space-y-2">
-                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Phone Number</label>
+                                <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">{t.phoneNumber}</label>
                                 <div className="flex gap-2">
                                     <div className="bg-white/5 border border-white/10 rounded-lg md:rounded-xl px-2 md:px-3 py-2.5 md:py-3 text-sm md:text-base text-white/60 min-w-[60px] md:min-w-[70px] flex items-center justify-center select-none cursor-not-allowed">
                                         {countryCode}
@@ -1348,7 +1283,7 @@ function BookingModal({ program, region, onClose }: { program: any, region: 'IN'
 
                         {/* Subject Selection */}
                         <div className="space-y-2 md:space-y-3">
-                            <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">Select Subject Focus</label>
+                            <label className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white/50">{t.selectSubjectFocus}</label>
                             <div className="flex flex-wrap gap-1.5 md:gap-2">
                                 {subjects.map((sub) => (
                                     <button
@@ -1371,11 +1306,11 @@ function BookingModal({ program, region, onClose }: { program: any, region: 'IN'
                             disabled={isSubmitting}
                             className="w-full py-3 md:py-4 mt-4 md:mt-6 rounded-lg md:rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-base md:text-lg hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-xl shadow-purple-600/20"
                         >
-                            {isSubmitting ? "Confirming..." : `Confirm Booking • ${price}`}
+                            {isSubmitting ? t.confirming : `${t.confirmBooking} • ${price}`}
                         </button>
 
                         <p className="text-center text-xs text-white/30">
-                            By booking, you agree to our Terms of Service.
+                            {t.termsOfService && `By booking, you agree to our ${t.termsOfService}.`}
                         </p>
                     </form>
                 </div>
