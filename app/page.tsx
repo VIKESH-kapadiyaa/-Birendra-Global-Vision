@@ -612,7 +612,7 @@ export default function App() {
                             themeColor="from-purple-600 via-violet-600 to-indigo-600"
                             onHover={(h: boolean) => setHoveredHub(h ? 'life' : null)}
                             features={[t.lifeFeature1, t.lifeFeature2, t.lifeFeature3]}
-                            onClick={() => setShowComingSoon(true)}
+                            href="/life-hub"
                             image="/hero/astrology.png"
                         />
                     </div>
@@ -980,17 +980,31 @@ export default function App() {
                                 {t.ctaDescription}
                             </p>
 
-                            <motion.button
-                                onClick={() => setBookingProgram({ title: "Consultation Session" })}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="group relative inline-flex items-center gap-2 md:gap-3 px-6 md:px-10 py-4 md:py-5 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-base md:text-lg shadow-2xl shadow-purple-600/30 overflow-hidden"
-                            >
-                                {/* Animated Glow */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
-                                <span className="relative z-10">{t.ctaButton}</span>
-                                <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                            </motion.button>
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mt-8 w-full">
+                                <Link href="/life-hub" className="w-full sm:w-auto">
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="group relative flex justify-center items-center gap-2 md:gap-3 px-6 md:px-10 py-4 md:py-5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base md:text-lg shadow-2xl shadow-purple-600/30 overflow-hidden w-full sm:w-auto"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+                                        <span className="relative z-10">Enter Life Hub</span>
+                                        <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                                    </motion.div>
+                                </Link>
+
+                                <Link href="/genius-hub" className="w-full sm:w-auto">
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="group relative flex justify-center items-center gap-2 md:gap-3 px-6 md:px-10 py-4 md:py-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-base md:text-lg shadow-2xl shadow-blue-600/30 overflow-hidden w-full sm:w-auto"
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+                                        <span className="relative z-10">Enter Genius Hub</span>
+                                        <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                                    </motion.div>
+                                </Link>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
