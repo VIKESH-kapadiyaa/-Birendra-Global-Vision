@@ -256,7 +256,7 @@ export default function GeniusHub() {
                             </FadeIn>
 
                             <FadeIn delay={0.1}>
-                                <h1 className="text-6xl md:text-[6.5rem] font-black text-black tracking-tighter leading-[0.95] mb-8 uppercase brutal-title brutal-highlight">
+                                <h1 className="text-5xl sm:text-6xl md:text-[6.5rem] font-black text-black tracking-tighter leading-[0.95] mb-8 uppercase brutal-title brutal-highlight">
                                     <span className="block mb-2">Master Core</span>
                                     <span className="block text-[#ff90e8]" style={{ WebkitTextStroke: '2px black' }}>Academics.</span>
                                 </h1>
@@ -296,7 +296,7 @@ export default function GeniusHub() {
                         <div className="flex-1 w-full max-w-lg lg:max-w-none relative mt-10 lg:mt-0 p-4 z-10 cursor-crosshair">
                             <FadeIn delay={0.3} direction="left" className="h-full">
                                 <ParallaxCard className="h-full">
-                                    <div className="brutal-card p-8 h-full flex flex-col justify-between bg-white relative">
+                                    <div className="brutal-card p-5 md:p-8 h-full flex flex-col justify-between bg-white relative">
                                         {/* Accent Tape element */}
                                         <div className="absolute -top-4 -right-4 w-16 h-8 bg-[#ffc900] border-2 border-black shadow-[4px_4px_0_0_#000] rotate-45 hidden md:block" style={{ transform: 'translateZ(20px)' }} />
 
@@ -332,21 +332,21 @@ export default function GeniusHub() {
                                             ))}
                                         </div>
 
-                                        <div className="mt-6 pt-6 border-t-[4px] border-black flex items-center justify-between relative z-10" style={{ transform: 'translateZ(10px)' }}>
+                                        <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t-[4px] border-black hidden md:flex items-center justify-between relative z-10" style={{ transform: 'translateZ(10px)' }}>
                                             <div className="flex -space-x-4">
                                                 {[
                                                     "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop",
                                                     "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
                                                     "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop"
                                                 ].map((src, i) => (
-                                                    <div key={i} className="w-14 h-14 border-[3px] border-black bg-white flex items-center justify-center overflow-hidden hover:z-20 hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#000]">
+                                                    <div key={i} className="w-10 h-10 md:w-14 md:h-14 border-[3px] border-black bg-white flex items-center justify-center overflow-hidden hover:z-20 hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#000]">
                                                         <img src={src} alt="avatar" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all border-2 border-white" />
                                                     </div>
                                                 ))}
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-xs text-black font-black uppercase tracking-widest mb-2 px-3 py-1 bg-[#ff6b00] border-[2px] border-black shadow-[2px_2px_0_0_#000] inline-block">Mentors</p>
-                                                <p className="text-base font-black text-black uppercase">Elite Faculty</p>
+                                                <p className="text-[10px] md:text-xs text-black font-black uppercase tracking-widest mb-1 md:mb-2 px-2 md:px-3 py-1 bg-[#ff6b00] border-[2px] border-black shadow-[2px_2px_0_0_#000] inline-block">Mentors</p>
+                                                <p className="text-sm md:text-base font-black text-black uppercase">Elite Faculty</p>
                                             </div>
                                         </div>
                                     </div>
@@ -381,22 +381,22 @@ export default function GeniusHub() {
             {/* BY THE NUMBERS (STATS) */}
             <section className="py-20 bg-white border-b-8 border-black relative overflow-hidden">
                 <div className="absolute inset-0 bg-[#e5e7eb] opacity-30 [background-image:radial-gradient(#000_1px,transparent_1px)] [background-size:24px_24px]" />
-                <div className="container mx-auto px-6 max-w-7xl relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div className="container mx-auto px-0 md:px-6 max-w-7xl relative z-10">
+                    <div className="flex overflow-x-auto md:grid md:grid-cols-3 gap-6 md:gap-10 snap-x snap-mandatory px-6 md:px-0 pb-8 md:pb-0 scrollbar-hide">
                         {[
                             { stat: "500+", text: "Students Worldwide", bg: "#b185fa", icon: Zap },
                             { stat: "98%", text: "Score Improvement", bg: "#5ad641", icon: TrendingUp },
                             { stat: "40+", text: "Elite Expert Tutors", bg: "#ff90e8", icon: Target }
                         ].map((item, i) => (
-                            <FadeIn key={i} delay={i * 0.1}>
+                            <FadeIn key={i} delay={i * 0.1} className="min-w-[85vw] sm:min-w-[400px] md:min-w-0 snap-center md:snap-none shrink-0">
                                 <ParallaxCard>
-                                    <div className="brutal-card p-10 bg-white text-center flex flex-col items-center justify-center transform transition-all group hover:bg-black hover:text-white relative z-10">
+                                    <div className="brutal-card p-8 md:p-10 bg-white text-center flex flex-col items-center justify-center transform transition-all group hover:bg-black hover:text-white relative z-10">
                                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5 mix-blend-multiply" />
-                                        <div className="inline-block p-4 border-[4px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-6 group-hover:rotate-6 transition-transform group-hover:border-white group-hover:shadow-[6px_6px_0px_0px_#fff]" style={{ backgroundColor: item.bg }}>
+                                        <div className="inline-block p-4 border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-6 group-hover:rotate-6 transition-transform group-hover:border-white group-hover:shadow-[4px_4px_0px_0px_#fff] md:group-hover:shadow-[6px_6px_0px_0px_#fff]" style={{ backgroundColor: item.bg }}>
                                             <item.icon size={48} className="text-black" />
                                         </div>
-                                        <h2 className="text-6xl font-black tracking-tighter mb-4 text-black group-hover:text-white" style={{ WebkitTextStroke: '1px black', color: item.bg }}>{item.stat}</h2>
-                                        <p className="text-xl font-bold uppercase tracking-widest text-black group-hover:text-white">{item.text}</p>
+                                        <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-4 text-black group-hover:text-white" style={{ WebkitTextStroke: '1px black', color: item.bg }}>{item.stat}</h2>
+                                        <p className="text-lg md:text-xl font-bold uppercase tracking-widest text-black group-hover:text-white">{item.text}</p>
                                     </div>
                                 </ParallaxCard>
                             </FadeIn>
@@ -420,7 +420,7 @@ export default function GeniusHub() {
                 <div className="container mx-auto px-6 max-w-7xl relative z-10">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <FadeIn>
-                            <h2 className="text-5xl md:text-[5rem] font-black text-black mb-6 tracking-tighter uppercase brutal-title">Academic <br />Disciplines.</h2>
+                            <h2 className="text-4xl sm:text-5xl md:text-[5rem] font-black text-black mb-6 tracking-tighter uppercase brutal-title">Academic <br />Disciplines.</h2>
                             <p className="text-lg md:text-xl text-black font-bold p-4 bg-[#ffc900] border-4 border-black shadow-[8px_8px_0_0_#000] inline-block mt-4">
                                 Comprehensive, rigorous, and completely personalized.
                             </p>
@@ -471,12 +471,12 @@ export default function GeniusHub() {
                 <div className="container mx-auto px-6 max-w-7xl relative z-10">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
 
-                        <div className="flex-1 bg-white p-8 md:p-12 border-[6px] border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] z-10 relative">
+                        <div className="flex-1 bg-white p-6 md:p-12 border-[4px] md:border-[6px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] z-10 relative">
                             {/* Tape accent */}
                             <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-48 h-8 bg-white/50 backdrop-blur-sm border-2 border-dashed border-black/50 rotate-1 shadow-sm" />
 
                             <FadeIn>
-                                <h2 className="text-5xl md:text-6xl font-black text-black mb-6 tracking-tighter uppercase brutal-title">The BGV <br /><span className="text-black px-4 py-1 italic bg-[#ff90e8] border-2 border-black rotate-2 inline-block shadow-[4px_4px_0_0_#000] mt-2">Methodology.</span></h2>
+                                <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-6 tracking-tighter uppercase brutal-title">The BGV <br /><span className="text-black px-4 py-1 italic bg-[#ff90e8] border-2 border-black rotate-2 inline-block shadow-[4px_4px_0_0_#000] mt-2">Methodology.</span></h2>
                                 <p className="text-lg md:text-xl text-black font-bold mb-10 leading-relaxed max-w-xl border-l-[8px] border-black pl-6 py-2 bg-gray-50/50">
                                     Every student has a unique mental architecture. Our four-step methodology ensures knowledge is completely internalized.
                                 </p>
@@ -497,7 +497,7 @@ export default function GeniusHub() {
                             </div>
                         </div>
 
-                        <div className="flex-1 w-full z-10">
+                        <div className="flex-1 w-full z-10 hidden lg:block">
                             <FadeIn direction="right">
                                 <ParallaxCard>
                                     <div className="relative aspect-square md:aspect-[4/3] bg-[#ffc900] border-8 border-black flex items-center justify-center p-4 md:p-8 text-center shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] group">
@@ -538,7 +538,7 @@ export default function GeniusHub() {
                         {/* Testimonial 1 */}
                         <FadeIn delay={0.1} direction="left">
                             <ParallaxCard>
-                                <div className="relative bg-[#ff90e8] p-10 border-[6px] border-black shadow-[16px_16px_0_0_#000] rotate-2 hover:rotate-0 transition-transform duration-300">
+                                <div className="relative bg-[#ff90e8] p-6 md:p-10 border-[4px] md:border-[6px] border-black shadow-[8px_8px_0_0_#000] md:shadow-[16px_16px_0_0_#000] lg:rotate-2 hover:rotate-0 transition-transform duration-300">
                                     <div className="absolute -top-6 left-8 w-24 h-12 bg-black/10 rotate-[-4deg] border-2 border-black/20" />
                                     <MessageCircle size={48} className="mb-6 text-black fill-white border-2 border-transparent" />
                                     <p className="text-xl md:text-2xl font-black italic mb-8 leading-relaxed">"The mathematics mentorship completely transformed my approach to advanced calculus. Highly recommended!"</p>
@@ -553,7 +553,7 @@ export default function GeniusHub() {
                         {/* Testimonial 2 */}
                         <FadeIn delay={0.2} direction="right">
                             <ParallaxCard>
-                                <div className="relative bg-[#b185fa] p-10 border-[6px] border-black shadow-[16px_16px_0_0_#000] -rotate-2 hover:rotate-0 transition-transform duration-300 mt-8 md:mt-0">
+                                <div className="relative bg-[#b185fa] p-6 md:p-10 border-[4px] md:border-[6px] border-black shadow-[8px_8px_0_0_#000] md:shadow-[16px_16px_0_0_#000] lg:-rotate-2 hover:rotate-0 transition-transform duration-300 mt-8 md:mt-0">
                                     <div className="absolute -bottom-6 right-8 w-24 h-12 bg-black/10 rotate-[4deg] border-2 border-black/20" />
                                     <MessageCircle size={48} className="mb-6 text-black fill-white border-2 border-transparent" />
                                     <p className="text-xl md:text-2xl font-black italic mb-8 leading-relaxed">"My physics tutor was exceptional. I went from struggling with mechanics to topping my class in just two months."</p>
@@ -573,15 +573,15 @@ export default function GeniusHub() {
                 <div className="absolute inset-0 bg-[#000] opacity-5 [background-image:radial-gradient(#000_2px,transparent_2px)] [background-size:32px_32px]" />
                 <div className="container mx-auto px-6 max-w-7xl relative z-10">
                     <FadeIn>
-                        <h2 className="text-center text-5xl md:text-[5rem] font-black uppercase text-black mb-16 tracking-tighter">Global <span className="text-white px-4 bg-black border-[4px] border-black shadow-[8px_8px_0_0_#4353ff] rotate-2 inline-block">Educators</span></h2>
+                        <h2 className="text-4xl sm:text-5xl md:text-[5rem] font-black uppercase text-black mb-16 tracking-tighter text-center">Global <br className="block sm:hidden" /><span className="text-white px-4 bg-black border-[4px] border-black shadow-[8px_8px_0_0_#4353ff] rotate-2 inline-block mt-2 sm:mt-0">Educators</span></h2>
                     </FadeIn>
 
                     <div className="space-y-16">
                         {faculty.map((member, i) => (
                             <FadeIn key={i} delay={i * 0.1}>
-                                <div className="brutal-card bg-white border-[6px] border-black shadow-[16px_16px_0_0_#000] p-0 flex flex-col lg:flex-row overflow-hidden group">
+                                <div className="brutal-card bg-white border-[4px] md:border-[6px] border-black shadow-[8px_8px_0_0_#000] md:shadow-[16px_16px_0_0_#000] p-0 flex flex-col lg:flex-row overflow-hidden group">
                                     {/* Left Column: Photo & Quick Stats */}
-                                    <div className="w-full lg:w-2/5 p-8 md:p-12 border-b-[6px] lg:border-b-0 lg:border-r-[6px] border-black relative" style={{ backgroundColor: member.color }}>
+                                    <div className="w-full lg:w-2/5 p-6 md:p-12 border-b-[4px] md:border-b-[6px] lg:border-b-0 lg:border-r-[6px] border-black relative" style={{ backgroundColor: member.color }}>
                                         <div className="absolute inset-0 bg-white/10 mix-blend-overlay" />
 
                                         <div className="relative z-10">

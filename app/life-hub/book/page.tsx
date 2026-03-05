@@ -126,7 +126,7 @@ function BookingForm() {
                                     <p className="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#7A6E3A] flex items-center gap-2 mb-3">
                                         <span className="w-6 h-px bg-[#7A6E3A]" /> Step 1 of 2
                                     </p>
-                                    <h1 className="text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-4" style={{ fontFamily: FONT }}>
+                                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-4" style={{ fontFamily: FONT }}>
                                         Reserve your<br /><em className="text-[#7A6E3A]">session.</em>
                                     </h1>
                                     <p className="text-base text-[#5A5040] max-w-xl leading-relaxed">
@@ -144,8 +144,8 @@ function BookingForm() {
                                                 whileHover={{ x: 4 }}
                                                 onClick={() => setSelectedService(svc)}
                                                 className={`w-full text-left flex items-center justify-between px-6 py-5 border transition-all ${selectedService.id === svc.id
-                                                        ? 'border-[#7A6E3A] bg-white shadow-[0_2px_20px_rgba(122,110,58,0.10)]'
-                                                        : 'border-[#C8B96E]/40 bg-[#F5F1E8] hover:border-[#C8B96E]'
+                                                    ? 'border-[#7A6E3A] bg-white shadow-[0_2px_20px_rgba(122,110,58,0.10)]'
+                                                    : 'border-[#C8B96E]/40 bg-[#F5F1E8] hover:border-[#C8B96E]'
                                                     }`}
                                             >
                                                 <div>
@@ -222,7 +222,7 @@ function BookingForm() {
                                     <p className="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#7A6E3A] flex items-center gap-2 mb-3">
                                         <span className="w-6 h-px bg-[#7A6E3A]" /> Step 2 of 2
                                     </p>
-                                    <h1 className="text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-4" style={{ fontFamily: FONT }}>
+                                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-4" style={{ fontFamily: FONT }}>
                                         Your details,<br /><em className="text-[#7A6E3A]">your journey.</em>
                                     </h1>
                                     <p className="text-base text-[#5A5040] max-w-xl leading-relaxed">
@@ -245,8 +245,8 @@ function BookingForm() {
                                                         type="button"
                                                         onClick={() => setForm(p => ({ ...p, type }))}
                                                         className={`flex-1 py-3.5 text-sm font-semibold uppercase tracking-[0.15em] border transition-colors ${form.type === type
-                                                                ? 'bg-[#2C2916] text-[#EDE9E1] border-[#2C2916]'
-                                                                : 'bg-[#F5F1E8] text-[#7A6E3A] border-[#C8B96E]/60 hover:border-[#7A6E3A]'
+                                                            ? 'bg-[#2C2916] text-[#EDE9E1] border-[#2C2916]'
+                                                            : 'bg-[#F5F1E8] text-[#7A6E3A] border-[#C8B96E]/60 hover:border-[#7A6E3A]'
                                                             }`}
                                                     >
                                                         {type}
@@ -433,7 +433,7 @@ function BookingForm() {
                                         <span className="w-6 h-px bg-[#7A6E3A]" /> Booking Received <span className="w-6 h-px bg-[#7A6E3A]" />
                                     </p>
 
-                                    <h2 className="text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-5" style={{ fontFamily: FONT }}>
+                                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-5" style={{ fontFamily: FONT }}>
                                         Your session<br /><em className="text-[#7A6E3A]">is confirmed.</em>
                                     </h2>
 

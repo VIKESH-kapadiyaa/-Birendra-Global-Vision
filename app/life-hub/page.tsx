@@ -274,7 +274,7 @@ const ServiceCard = ({ service, index }: { service: Service; index: number }) =>
                 </div>
 
                 {/* Content */}
-                <div className={`w-full lg:w-1/2 flex flex-col justify-center px-10 py-12 bg-[#EDE9E1]`}>
+                <div className={`w-full lg:w-1/2 flex flex-col justify-center px-6 py-8 md:px-10 md:py-12 bg-[#EDE9E1]`}>
                     {/* Category label */}
                     <div className="flex items-center gap-3 mb-5">
                         <service.icon size={14} style={{ color: '#7A6E3A' }} />
@@ -311,7 +311,7 @@ const ServiceCard = ({ service, index }: { service: Service; index: number }) =>
                     </ul>
 
                     {/* Pricing row */}
-                    <div className="flex items-center justify-between border-t border-[#C8B96E]/40 pt-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-[#C8B96E]/40 pt-6">
                         <div>
                             <p className="text-[10px] uppercase tracking-[0.18em] font-sans font-semibold text-[#7A6E3A] mb-0.5">From</p>
                             <p className="text-2xl font-bold text-[#2C2916]" style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}>
@@ -321,7 +321,7 @@ const ServiceCard = ({ service, index }: { service: Service; index: number }) =>
                         </div>
                         <Link
                             href={`/life-hub/book?service=${service.bookingId}`}
-                            className="inline-flex items-center gap-2 bg-[#2C2916] text-[#EDE9E1] px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] font-sans hover:bg-[#7A6E3A] transition-colors rounded-full"
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2C2916] text-[#EDE9E1] px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] font-sans hover:bg-[#7A6E3A] transition-colors rounded-full"
                         >
                             Book Now <ArrowRight size={14} />
                         </Link>
@@ -371,7 +371,7 @@ export default function LifeHub() {
 
                                 <FadeIn delay={0.1}>
                                     <h1
-                                        className="text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-[#2C2916] leading-[1.05] mb-8"
+                                        className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-[#2C2916] leading-[1.05] mb-8"
                                         style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}
                                     >
                                         Your path<br />
@@ -387,18 +387,18 @@ export default function LifeHub() {
                                     </p>
                                 </FadeIn>
 
-                                <FadeIn delay={0.3} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                                    <a href="#services" className="inline-flex items-center justify-center gap-2 bg-[#2C2916] text-[#EDE9E1] px-10 py-4 text-sm uppercase tracking-[0.18em] font-semibold hover:bg-[#7A6E3A] transition-colors rounded-full">
+                                <FadeIn delay={0.3} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start w-full">
+                                    <a href="#services" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2C2916] text-[#EDE9E1] px-10 py-4 text-sm uppercase tracking-[0.18em] font-semibold hover:bg-[#7A6E3A] transition-colors rounded-full">
                                         Explore Sessions <ArrowRight size={14} />
                                     </a>
-                                    <a href="#services" className="inline-flex items-center justify-center gap-2 border border-[#7A6E3A] text-[#7A6E3A] px-10 py-4 text-sm uppercase tracking-[0.18em] font-semibold hover:bg-[#7A6E3A] hover:text-[#EDE9E1] transition-colors rounded-full">
+                                    <a href="#services" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#7A6E3A] text-[#7A6E3A] px-10 py-4 text-sm uppercase tracking-[0.18em] font-semibold hover:bg-[#7A6E3A] hover:text-[#EDE9E1] transition-colors rounded-full">
                                         Book a Session
                                     </a>
                                 </FadeIn>
                             </div>
 
                             {/* Right: decorative SVG mandala */}
-                            <FadeIn delay={0.25} direction="left" className="flex-1 hidden lg:flex items-center justify-center">
+                            <FadeIn delay={0.25} direction="left" className="absolute -right-[30%] -top-[10%] opacity-10 pointer-events-none scale-150 lg:scale-100 lg:opacity-100 lg:pointer-events-auto lg:static lg:flex-1 flex items-center justify-center z-[-1] lg:z-auto">
                                 <motion.div
                                     animate={{ rotate: 360 }}
                                     transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
@@ -491,10 +491,10 @@ export default function LifeHub() {
                                 <span className="w-8 h-px bg-[#7A6E3A]" /> Our Offerings
                             </p>
                             <h2
-                                className="text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight"
+                                className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight"
                                 style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}
                             >
-                                Choose your<br />path to wellness.
+                                Choose your<br className="hidden sm:block" />path to wellness.
                             </h2>
                         </FadeIn>
 
@@ -522,15 +522,17 @@ export default function LifeHub() {
                         </FadeIn>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
-                            {/* Horizontal connector */}
+                            {/* Horizontal connector (Desktop) */}
                             <div className="hidden md:block absolute top-8 left-[20%] right-[20%] h-px bg-[#C8B96E]/60" />
+                            {/* Vertical connector (Mobile) */}
+                            <div className="md:hidden absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-[#C8B96E]/0 via-[#C8B96E]/60 to-[#C8B96E]/0 -translate-x-1/2" />
 
                             {[
                                 { step: '01', title: 'Choose your path', desc: 'Browse our five transformative sessions and select the one that calls to you right now.' },
                                 { step: '02', title: 'Reserve your slot', desc: 'Fill in a short form with your details and your preferred date and time.' },
                                 { step: '03', title: 'Begin your shift', desc: 'Connect with your expert guide via Zoom for a session that will change your world.' },
                             ].map((item, i) => (
-                                <FadeIn key={i} delay={i * 0.15} className="relative z-10 text-center px-8 py-10">
+                                <FadeIn key={i} delay={i * 0.15} className="relative z-10 text-center px-6 py-8 md:px-8 md:py-10">
                                     <div
                                         className="w-16 h-16 rounded-full border-2 border-[#7A6E3A] mx-auto flex items-center justify-center mb-6 bg-[#E8E3D8]"
                                     >
@@ -571,9 +573,9 @@ export default function LifeHub() {
                             <p className="text-xs uppercase tracking-[0.3em] font-semibold text-[#7A6E3A] mb-3 flex items-center gap-2">
                                 <span className="w-8 h-px bg-[#7A6E3A]" /> Your Guides
                             </p>
-                            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                                 <h2
-                                    className="text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight"
+                                    className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight"
                                     style={{ fontFamily: "'Playfair Display', 'Georgia', serif" }}
                                 >
                                     Meet the minds<br />
@@ -590,7 +592,7 @@ export default function LifeHub() {
                             <div className="flex flex-col xl:flex-row gap-0 border border-[#C8B96E]/30 overflow-hidden bg-white shadow-[0_4px_40px_rgba(122,110,58,0.06)]">
 
                                 {/* Left — large portrait */}
-                                <div className="w-full xl:w-[40%] relative overflow-hidden min-h-[480px] xl:min-h-0">
+                                <div className="w-full xl:w-[40%] relative overflow-hidden h-[340px] sm:h-[400px] md:min-h-[480px] xl:min-h-0">
                                     <img
                                         src="/faculty/amaira.jpg"
                                         alt="Amaira Srivastava"
@@ -611,7 +613,7 @@ export default function LifeHub() {
                                 </div>
 
                                 {/* Right — bio & details */}
-                                <div className="w-full xl:w-[60%] p-10 md:p-16 flex flex-col justify-between bg-[#EDE9E1]">
+                                <div className="w-full xl:w-[60%] p-6 md:p-10 lg:p-16 flex flex-col justify-between bg-[#EDE9E1]">
 
                                     {/* Quote / headline */}
                                     <div className="mb-10">
