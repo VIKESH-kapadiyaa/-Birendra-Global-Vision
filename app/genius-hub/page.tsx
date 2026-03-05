@@ -111,10 +111,10 @@ export default function GeniusHub() {
     ];
 
     return (
-        <main className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 font-sans">
+        <main className="min-h-screen bg-white text-black selection:bg-[#5ad641] selection:text-black font-sans">
             {/* Scroll Progress Bar */}
             <motion.div
-                className="fixed top-0 left-0 right-0 h-1 bg-blue-600 origin-left z-50"
+                className="fixed top-0 left-0 right-0 h-2 bg-black origin-left z-50 border-b-2 border-white"
                 style={{ scaleX: scrollYProgress }}
             />
 
@@ -122,112 +122,107 @@ export default function GeniusHub() {
             <div className="h-24 w-full" />
 
             {/* HERO SECTION */}
-            <section className="relative pt-20 pb-32 overflow-hidden">
+            <section className="relative pt-20 pb-32 overflow-hidden bg-white">
                 {/* Clean Geometric Background Elements */}
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-blue-50/50 rounded-full blur-3xl opacity-80" />
-                    <div className="absolute bottom-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-indigo-50/50 rounded-full blur-3xl opacity-80" />
-
                     {/* Minimal Grid Pattern */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-50" />
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-100" />
                 </div>
 
                 <div className="container mx-auto px-6 relative z-10 max-w-6xl">
                     <div className="flex flex-col lg:flex-row items-center gap-16">
 
                         {/* Hero Content */}
-                        <div className="flex-1 text-center lg:text-left">
+                        <div className="flex-1 text-center lg:text-left hover-trigger">
                             <FadeIn>
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
-                                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                                    <span className="text-xs font-bold uppercase tracking-widest text-blue-800">Premium Academic Mentorship</span>
+                                <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border-[3px] border-black mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all">
+                                    <span className="w-3 h-3 rounded-full bg-[#5ad641] border-[2px] border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] animate-pulse" />
+                                    <span className="text-sm font-black uppercase tracking-widest text-black">Premium Academic Mentorship</span>
                                 </div>
                             </FadeIn>
 
                             <FadeIn delay={0.1}>
-                                <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-                                    Master Core <br className="hidden md:block" />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Academics.</span>
+                                <h1 className="text-6xl md:text-[6.5rem] font-black text-black tracking-tighter leading-[0.95] mb-8 uppercase brutal-title brutal-highlight">
+                                    <span className="block mb-2">Master Core</span>
+                                    <span className="block text-[#5ad641]" style={{ WebkitTextStroke: '3px black' }}>Academics.</span>
                                 </h1>
                             </FadeIn>
 
                             <FadeIn delay={0.2}>
-                                <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0">
+                                <p className="text-xl md:text-2xl text-black font-bold border-l-[6px] border-[#5ad641] pl-6 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0 py-2">
                                     Accelerate learning with world-class, customized one-on-one education. We provide elite instruction in Mathematics, Sciences, English, and bespoke subjects designed entirely around the student's ambition.
                                 </p>
                             </FadeIn>
 
                             <FadeIn delay={0.3}>
-                                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                                    <Link href="/" className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-semibold transition-all shadow-xl shadow-slate-900/10 flex items-center gap-2 group w-full sm:w-auto justify-center">
+                                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
+                                    <Link href="/" data-hover-text="Ready?" className="brutal-btn py-4 px-8 w-full sm:w-auto text-center flex items-center justify-center gap-2 text-lg">
                                         Book Consultation
-                                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                                        <ArrowRight size={20} className="relative z-20" />
                                     </Link>
-                                    <Link href="#subjects" className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-xl font-semibold transition-all w-full sm:w-auto justify-center flex items-center">
+                                    <Link href="#subjects" data-hover-text="See More" className="brutal-btn-secondary py-4 px-8 w-full sm:w-auto text-center flex items-center justify-center text-lg">
                                         Explore Subjects
                                     </Link>
                                 </div>
                             </FadeIn>
 
-                            <FadeIn delay={0.4} className="mt-12 flex items-center justify-center lg:justify-start gap-8 text-slate-400">
+                            <FadeIn delay={0.4} className="mt-12 flex items-center justify-center lg:justify-start gap-8 text-black font-bold">
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle2 size={16} className="text-blue-600" />
-                                    <span className="text-sm font-medium">Verified Educators</span>
+                                    <CheckCircle2 size={24} className="text-[#5ad641] bg-black rounded-full" />
+                                    <span className="text-sm font-black uppercase tracking-wider">Verified Educators</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle2 size={16} className="text-blue-600" />
-                                    <span className="text-sm font-medium">100% Customized</span>
+                                    <CheckCircle2 size={24} className="text-[#5ad641] bg-black rounded-full" />
+                                    <span className="text-sm font-black uppercase tracking-wider">100% Customized</span>
                                 </div>
                             </FadeIn>
                         </div>
 
                         {/* Hero Visual */}
-                        <div className="flex-1 w-full max-w-lg lg:max-w-none relative">
-                            <FadeIn delay={0.3} direction="left">
-                                <div className="relative rounded-[2rem] bg-white border border-slate-100 shadow-2xl shadow-slate-200/50 p-8 overflow-hidden">
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-indigo-50 blur-3xl rounded-full opacity-60 pointer-events-none -mr-20 -mt-20" />
-
-                                    <div className="flex items-center justify-between mb-8 relative z-10">
-                                        <h3 className="text-lg font-bold text-slate-800">Student Dashboard Matrix</h3>
-                                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                                            <Target size={20} className="text-blue-600" />
+                        <div className="flex-1 w-full max-w-lg lg:max-w-none relative mt-10 lg:mt-0 p-4">
+                            <FadeIn delay={0.3} direction="left" className="h-full">
+                                <div className="brutal-card p-8 h-full flex flex-col justify-between">
+                                    <div className="flex items-center justify-between mb-8 relative z-10 border-b-[4px] border-black pb-6">
+                                        <h3 className="text-2xl font-black uppercase tracking-wider text-black">Student Dashboard Matrix</h3>
+                                        <div className="w-14 h-14 border-[3px] border-black shadow-[4px_4px_0_0_#000] bg-[#5ad641] flex items-center justify-center transition-transform hover:rotate-90 duration-300">
+                                            <Target size={28} className="text-black" />
                                         </div>
                                     </div>
 
                                     <div className="space-y-4 relative z-10">
                                         {[
-                                            { subject: "Advanced Calculus", progress: 85, color: "bg-blue-500" },
-                                            { subject: "Organic Chemistry", progress: 65, color: "bg-indigo-500" },
-                                            { subject: "English Literature", progress: 92, color: "bg-emerald-500" }
+                                            { subject: "Advanced Calculus", progress: 85, color: "bg-[#5ad641]" },
+                                            { subject: "Organic Chemistry", progress: 65, color: "bg-black" },
+                                            { subject: "English Literature", progress: 92, color: "bg-[#5ad641]" }
                                         ].map((stat, i) => (
-                                            <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-sm font-semibold text-slate-700">{stat.subject}</span>
-                                                    <span className="text-xs font-bold text-slate-500">{stat.progress}%</span>
+                                            <div key={i} className="px-5 py-4 bg-white border-[3px] border-black mb-5 shadow-[5px_5px_0_0_#000] hover:-translate-y-1 transition-transform select-none">
+                                                <div className="flex justify-between items-center mb-4">
+                                                    <span className="text-base font-black uppercase text-black tracking-wide">{stat.subject}</span>
+                                                    <span className="text-sm font-black text-black border-[3px] border-black px-3 py-1 bg-[#5ad641]">{stat.progress}%</span>
                                                 </div>
-                                                <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                                                <div className="w-full h-4 bg-white border-[3px] border-black overflow-hidden relative">
                                                     <motion.div
                                                         initial={{ width: 0 }}
                                                         animate={{ width: `${stat.progress}%` }}
                                                         transition={{ duration: 1.5, delay: 0.5 + (i * 0.2) }}
-                                                        className={`h-full ${stat.color} rounded-full`}
+                                                        className={`h-full ${stat.color} border-r-[3px] border-black`}
                                                     />
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between relative z-10">
-                                        <div className="flex -space-x-3">
+                                    <div className="mt-6 pt-6 border-t-[4px] border-black flex items-center justify-between relative z-10">
+                                        <div className="flex -space-x-4">
                                             {[1, 2, 3].map(i => (
-                                                <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
-                                                    <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${i}&backgroundColor=e2e8f0`} alt="avatar" className="w-full h-full object-cover" />
+                                                <div key={i} className="w-14 h-14 border-[3px] border-black bg-white flex items-center justify-center overflow-hidden hover:z-20 hover:-translate-y-2 transition-transform shadow-[4px_4px_0_0_#000]">
+                                                    <img src={`https://api.dicebear.com/7.x/notionists/svg?seed=${i}&backgroundColor=e2e8f0`} alt="avatar" className="w-full h-full object-cover grayscale border-2 border-white" />
                                                 </div>
                                             ))}
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-xs text-slate-400 font-medium">Active Mentors</p>
-                                            <p className="text-sm font-bold text-slate-800">World-Class Faculty</p>
+                                            <p className="text-xs text-black font-black uppercase tracking-widest mb-2 px-3 py-1 bg-[#5ad641] border-[2px] border-black shadow-[2px_2px_0_0_#000] inline-block">Mentors</p>
+                                            <p className="text-base font-black text-black uppercase">World-Class Faculty</p>
                                         </div>
                                     </div>
                                 </div>
@@ -239,33 +234,28 @@ export default function GeniusHub() {
             </section>
 
             {/* SUBJECTS SECTION */}
-            <section id="subjects" className="py-24 bg-slate-50 relative">
-                <div className="container mx-auto px-6 max-w-7xl">
+            <section id="subjects" className="py-24 bg-white border-y-8 border-black relative">
+                <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] [background-size:32px_32px] opacity-50" />
+                <div className="container mx-auto px-6 max-w-7xl relative z-10">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <FadeIn>
-                            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Academic Disciplines.</h2>
-                            <p className="text-lg text-slate-600">Comprehensive, rigorous, and completely personalized. We cover the entire spectrum of fundamental and advanced global curricula.</p>
+                            <h2 className="text-5xl md:text-6xl font-black text-black mb-6 tracking-tighter uppercase brutal-title">Academic Disciplines.</h2>
+                            <p className="text-lg md:text-xl text-black font-bold p-4 bg-[#5ad641] border-4 border-black brutal-card transform-none hover:transform-none">Comprehensive, rigorous, and completely personalized. We cover the entire spectrum of fundamental and advanced global curricula.</p>
                         </FadeIn>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {subjects.map((sub, i) => (
                             <FadeIn key={i} delay={i * 0.1}>
-                                <div className="group h-full bg-white p-8 rounded-3xl border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 flex flex-col cursor-pointer">
-                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300
-                                        ${sub.color === 'blue' ? 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white' : ''}
-                                        ${sub.color === 'indigo' ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white' : ''}
-                                        ${sub.color === 'emerald' ? 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white' : ''}
-                                        ${sub.color === 'orange' ? 'bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white' : ''}
-                                        ${sub.color === 'purple' ? 'bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white' : ''}
-                                    `}>
-                                        <sub.icon size={28} strokeWidth={1.5} />
+                                <div className="group h-full brutal-card p-8 flex flex-col cursor-pointer bg-white">
+                                    <div className="w-16 h-16 border-4 border-black bg-white flex items-center justify-center mb-6 transition-transform duration-300 group-hover:bg-[#5ad641] group-hover:scale-110 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                        <sub.icon size={32} strokeWidth={2.5} className="text-black" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-3">{sub.title}</h3>
-                                    <p className="text-slate-600 leading-relaxed text-sm flex-1">{sub.desc}</p>
+                                    <h3 className="text-2xl font-black uppercase text-black mb-3">{sub.title}</h3>
+                                    <p className="text-black font-medium leading-relaxed text-base flex-1">{sub.desc}</p>
 
-                                    <div className="mt-8 pt-6 border-t border-slate-100 flex items-center text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                                        View Syllabus <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                    <div className="mt-8 pt-6 border-t-4 border-black flex items-center text-sm font-black uppercase text-black group-hover:text-[#5ad641] transition-colors">
+                                        View Syllabus <ArrowRight size={20} className="ml-2 group-hover:translate-x-2 transition-transform" />
                                     </div>
                                 </div>
                             </FadeIn>
@@ -275,27 +265,27 @@ export default function GeniusHub() {
             </section>
 
             {/* METHODOLOGY SECTION */}
-            <section className="py-24 bg-white relative overflow-hidden">
+            <section className="py-24 bg-white relative overflow-hidden border-b-8 border-black">
                 <div className="container mx-auto px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
 
                         <div className="flex-1">
                             <FadeIn>
-                                <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">The BGV <br /><span className="text-blue-600">Methodology.</span></h2>
-                                <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-xl">
+                                <h2 className="text-4xl md:text-6xl font-black text-black mb-6 tracking-tighter uppercase brutal-title">The BGV <br /><span className="text-black bg-[#5ad641] px-2 italic">Methodology.</span></h2>
+                                <p className="text-lg md:text-xl text-black font-semibold mb-10 leading-relaxed max-w-xl border-l-8 border-black pl-6 bg-gray-50 py-4">
                                     We do not believe in a one-size-fits-all approach. Every student has a unique mental architecture. Our four-step methodology ensures knowledge is completely internalized.
                                 </p>
                             </FadeIn>
 
-                            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-6 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                            <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.45rem] before:-translate-x-px md:before:ml-[1.45rem] before:h-full before:w-1 before:bg-black">
                                 {methodology.map((item, i) => (
-                                    <FadeIn key={i} delay={i * 0.1} direction="left" className="relative flex items-start gap-6">
-                                        <div className="w-12 h-12 rounded-full bg-white border-4 border-slate-100 flex items-center justify-center shrink-0 z-10 shadow-sm">
-                                            <span className="text-xs font-black text-blue-600">{item.step}</span>
+                                    <FadeIn key={i} delay={i * 0.1} direction="left" className="relative flex items-start gap-8">
+                                        <div className="w-12 h-12 bg-white border-4 border-black flex items-center justify-center shrink-0 z-10 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-[#5ad641] transition-colors">
+                                            <span className="text-sm font-black text-black">{item.step}</span>
                                         </div>
-                                        <div className="pt-2">
-                                            <h4 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h4>
-                                            <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+                                        <div className="pt-1 brutal-card p-6 w-full -mt-2">
+                                            <h4 className="text-xl font-black uppercase text-black mb-2">{item.title}</h4>
+                                            <p className="text-black font-medium text-base leading-relaxed">{item.desc}</p>
                                         </div>
                                     </FadeIn>
                                 ))}
@@ -304,18 +294,18 @@ export default function GeniusHub() {
 
                         <div className="flex-1 w-full">
                             <FadeIn direction="right">
-                                <div className="relative aspect-square md:aspect-[4/3] rounded-[3rem] overflow-hidden bg-slate-900 flex items-center justify-center p-8 text-center group">
+                                <div className="relative aspect-square md:aspect-[4/3] bg-white border-8 border-black flex items-center justify-center p-8 text-center group brutal-card">
                                     <img
                                         src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
                                         alt="Students learning"
-                                        className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-1000"
+                                        className="absolute inset-0 w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-500"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+                                    <div className="absolute inset-0 bg-black/50" />
 
-                                    <div className="relative z-10 max-w-sm">
-                                        <GraduationCap size={48} className="text-white mx-auto mb-6 opacity-80" />
-                                        <h3 className="text-2xl font-bold text-white mb-4">"Education is not the learning of facts, but the training of the mind to think."</h3>
-                                        <p className="text-white/60 font-medium uppercase tracking-widest text-xs">— Albert Einstein</p>
+                                    <div className="relative z-10 max-w-sm bg-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(90,214,65,1)]">
+                                        <GraduationCap size={48} className="text-black mx-auto mb-6" />
+                                        <h3 className="text-2xl font-black text-black mb-4 uppercase">"Education is not the learning of facts, but the training of the mind to think."</h3>
+                                        <p className="text-black font-black uppercase tracking-widest text-sm bg-[#5ad641] inline-block px-2 py-1 border-2 border-black">— Albert Einstein</p>
                                     </div>
                                 </div>
                             </FadeIn>
@@ -326,21 +316,20 @@ export default function GeniusHub() {
             </section>
 
             {/* CTA SECTION */}
-            <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
-                <div className="absolute inset-0 w-full h-full opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none" />
+            <section className="py-32 bg-black text-[#5ad641] relative overflow-hidden">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#333_1px,transparent_1px),linear-gradient(to_bottom,#333_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-50" />
 
                 <div className="container mx-auto px-6 relative z-10 text-center max-w-4xl">
                     <FadeIn>
-                        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Ready to excel?</h2>
-                        <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
+                        <h2 className="text-5xl md:text-[6rem] font-black tracking-tighter mb-8 uppercase glitch" style={{ WebkitTextStroke: '2px #5ad641', color: 'black' }}>Ready to excel?</h2>
+                        <p className="text-xl md:text-2xl text-white font-bold mb-12 max-w-2xl mx-auto uppercase tracking-wider">
                             Join elite students worldwide who are accelerating their academic journeys through our specialized mentorship.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <Link href="/" className="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 rounded-xl font-bold transition-all text-lg flex items-center gap-2 group w-full sm:w-auto justify-center">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <Link href="/" data-hover-text="Let's Go!" className="brutal-btn bg-white text-black border-4 py-6 px-12 transition-all text-xl w-full sm:w-auto flex items-center justify-center gap-4">
                                 Book Your First Demo
-                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                <ArrowRight size={28} className="relative z-20" />
                             </Link>
                         </div>
                     </FadeIn>
