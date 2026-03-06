@@ -149,8 +149,25 @@ function BookingForm() {
                             amount_paid: numericPrice,
                             payment_id: response.razorpay_payment_id || 'link_fallback'
                         }]);
+
+                        await fetch('/api/send-email', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                to: form.email,
+                                subject: 'Session Confirmed - BGV Life Hub',
+                                type: 'life_hub',
+                                data: {
+                                    name: form.name,
+                                    service_name: selectedService.subtitle,
+                                    whatsapp: form.whatsapp,
+                                    date: form.date,
+                                    time: form.time
+                                }
+                            })
+                        });
                     } catch (err) {
-                        console.error("Supabase Log Error:", err);
+                        console.error("Payment Success Error:", err);
                     }
                     setStep(3);
                 },

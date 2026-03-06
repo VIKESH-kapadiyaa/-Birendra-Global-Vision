@@ -69,6 +69,21 @@ export default function EducatorApplication() {
                 subject: formData.subject === 'Other' ? formData.customSubject : formData.subject,
                 motivation: formData.motivation
             }]);
+
+            // Fire off welcome email
+            await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    to: formData.email,
+                    subject: 'Welcome to Birendra Global Vision - Faculty App!',
+                    type: 'teacher',
+                    data: {
+                        name: formData.fullName.split(' ')[0],
+                        subject: formData.subject === 'Other' ? formData.customSubject : formData.subject
+                    }
+                })
+            });
         } catch (error) {
             console.error('Failed to save to Supabase:', error);
         }

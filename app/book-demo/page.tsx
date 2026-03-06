@@ -96,8 +96,23 @@ export default function BookDemoPage() {
                             amount_paid: numericPrice,
                             payment_id: response.razorpay_payment_id || 'link_fallback'
                         }]);
+
+                        await fetch('/api/send-email', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                to: formData.email,
+                                subject: 'Demo Confirmation - BGV Genius Hub',
+                                type: 'demo',
+                                data: {
+                                    name: formData.name,
+                                    subject: formData.subject,
+                                    date: formData.preferredTime
+                                }
+                            })
+                        });
                     } catch (err) {
-                        console.error("Supabase Log Error:", err);
+                        console.error("Payment Success Error:", err);
                     }
                     setPhase('success');
                 },
