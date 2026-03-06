@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Upload, CheckCircle, Video, MapPin, BookOpen, User, Mail, Phone, Sparkles } from 'lucide-react';
+import { ArrowLeft, Upload, CheckCircle, Video, MapPin, BookOpen, User, Mail, Phone, Sparkles, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function EducatorApplication() {
     const [step, setStep] = useState(1);
@@ -54,14 +55,26 @@ export default function EducatorApplication() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setIsSuccess(true);
-        }, 2500);
+
+        try {
+            await supabase.from('teachers').insert([{
+                full_name: formData.fullName,
+                email: formData.email,
+                phone: formData.phone,
+                country: formData.country,
+                city: formData.city,
+                subject: formData.subject === 'Other' ? formData.customSubject : formData.subject,
+                motivation: formData.motivation
+            }]);
+        } catch (error) {
+            console.error('Failed to save to Supabase:', error);
+        }
+
+        setIsSubmitting(false);
+        setIsSuccess(true);
     };
 
     const isValidStep1 = formData.fullName && formData.email && formData.phone;
@@ -353,16 +366,17 @@ export default function EducatorApplication() {
                                 transition={{ type: "spring", damping: 15, stiffness: 100 }}
                                 className="w-24 h-24 mx-auto bg-green-500/10 rounded-full flex items-center justify-center text-green-500 mb-8"
                             >
-                                <CheckCircle size={48} />
+                                <Heart size={48} className="text-amber-500 fill-amber-500" />
                             </motion.div>
 
-                            <motion.h2 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-3xl md:text-5xl font-black mb-4">Application Received.</motion.h2>
-                            <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-white/60 text-base md:text-lg mb-10 max-w-md mx-auto">
-                                Thank you, {formData.fullName.split(' ')[0]}. Our admissions board will deeply review your demo pitch and vision. Expect to hear from us within 7 days.
+                            <motion.h2 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-3xl md:text-5xl font-black mb-4">Application Beautifully Received.</motion.h2>
+                            <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="text-white/80 text-base md:text-lg mb-10 max-w-md mx-auto">
+                                Thank you from the bottom of our hearts, {formData.fullName.split(' ')[0]}.
+                                We are absolutely thrilled to review your demo pitch and vision. We deeply value educators like you! You will hear from us very soon.
                             </motion.p>
 
                             <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
-                                <Link href="/" className="inline-flex px-8 py-4 bg-white text-black font-bold uppercase tracking-widest rounded-xl hover:bg-white/90 transition-colors">
+                                <Link href="/" className="inline-flex px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black uppercase tracking-widest rounded-xl hover:scale-105 transition-all shadow-lg">
                                     Return to Cosmos
                                 </Link>
                             </motion.div>

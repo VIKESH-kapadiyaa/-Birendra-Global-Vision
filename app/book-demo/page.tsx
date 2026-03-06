@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, ChevronRight, Zap, Target, BookOpen, Clock, Globe } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ChevronRight, Zap, Target, BookOpen, Clock, Globe, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 type BookingPhase = 'form' | 'payment' | 'success';
 
@@ -27,19 +28,98 @@ export default function BookDemoPage() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Move to payment simulation phase
-        setPhase('payment');
-
-        // Simulate a payment process taking 3 seconds
-        setTimeout(() => {
-            setPhase('success');
-        }, 3000);
+    const loadRazorpay = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
     };
 
     const price = formData.country === 'India' ? '₹49' : '£1';
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setPhase('payment');
+
+        const isLoaded = await loadRazorpay();
+        if (!isLoaded) {
+            window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+            return;
+        }
+
+        const numericPrice = parseInt(price.replace(/[^0-9]/g, ''), 10);
+        const currency = formData.country === 'India' ? 'INR' : 'GBP';
+
+        try {
+            const res = await fetch('/api/razorpay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: numericPrice, currency })
+            });
+
+            if (!res.ok) {
+                window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+                return;
+            }
+
+            const order = await res.json();
+
+            if (order.error) {
+                window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+                return;
+            }
+
+            const options = {
+                key: 'rzp_live_SNuYyvjWoaQDcz',
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Birendra Global Vision',
+                description: `Demo Booking for ${formData.subject}`,
+                order_id: order.id,
+                handler: async function (response: any) {
+                    try {
+                        await supabase.from('bookings').insert([{
+                            type: 'genius_hub',
+                            service_name: 'Demo Booked',
+                            customer_name: formData.name,
+                            email: formData.email,
+                            whatsapp: formData.whatsapp,
+                            country: formData.country,
+                            role: formData.role,
+                            subject: formData.subject,
+                            topics: formData.topics,
+                            date: formData.preferredTime,
+                            amount_paid: numericPrice,
+                            payment_id: response.razorpay_payment_id || 'link_fallback'
+                        }]);
+                    } catch (err) {
+                        console.error("Supabase Log Error:", err);
+                    }
+                    setPhase('success');
+                },
+                prefill: {
+                    name: formData.name,
+                    email: formData.email,
+                    contact: formData.whatsapp
+                },
+                theme: {
+                    color: '#000000'
+                }
+            };
+            const rzp = new (window as any).Razorpay(options);
+            rzp.on('payment.failed', function () {
+                setPhase('form');
+            });
+            rzp.open();
+        } catch (err) {
+            console.error(err);
+            window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+        }
+    };
 
     return (
         <main className="min-h-screen bg-[#e5e7eb] font-sans selection:bg-[#ff90e8] selection:text-black py-16 px-4 md:px-8 relative overflow-hidden flex flex-col items-center justify-center">
@@ -256,12 +336,13 @@ export default function BookDemoPage() {
                             </motion.div>
 
                             <h2 className="text-6xl md:text-7xl font-black uppercase text-black mb-8 tracking-tighter leading-[0.9]" style={{ WebkitTextStroke: '2px black' }}>
-                                Demo Booked<br className="hidden md:block" /> Successfully
+                                Demo Booked<br className="hidden md:block" /> Beautifully!
                             </h2>
 
                             <div className="bg-white border-[6px] border-black p-8 md:p-10 mb-12 text-left shadow-[8px_8px_0_0_#000] transform -rotate-1">
                                 <p className="text-black font-black text-2xl mb-8 leading-tight">
-                                    Hey <span className="bg-[#ffc900] px-2 border-b-4 border-black inline-block -rotate-1">{formData.name}</span>, your expert mentor for <span className="text-white bg-[#4353ff] uppercase px-3 py-1 border-[3px] border-black shadow-[4px_4px_0_0_#000] inline-block mt-2 rotate-1">{formData.subject}</span> awaits!
+                                    Hey <span className="bg-[#ffc900] px-2 border-b-4 border-black inline-block -rotate-1">{formData.name}</span>! We are so thrilled to welcome you.
+                                    Your expert mentor for <span className="text-white bg-[#4353ff] uppercase px-3 py-1 border-[3px] border-black shadow-[4px_4px_0_0_#000] inline-block mt-2 rotate-1">{formData.subject}</span> awaits! Get ready for an incredible learning experience!
                                 </p>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

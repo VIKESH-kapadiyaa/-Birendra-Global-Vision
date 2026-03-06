@@ -3,8 +3,9 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, CheckCircle2, User, Mail, Phone, MapPin, Calendar, MessageSquare, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, User, Mail, Phone, MapPin, Calendar, MessageSquare, ChevronDown, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabaseClient';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FONT
@@ -63,6 +64,8 @@ function BookingForm() {
         type: 'student' as 'student' | 'professional',
     });
 
+    const [isProcessing, setIsProcessing] = useState(false);
+
     // Re-sync if URL param changes
     useEffect(() => {
         const s = SERVICES.find(s => s.id === serviceParam);
@@ -79,9 +82,96 @@ function BookingForm() {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const loadRazorpay = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setStep(3);
+        setIsProcessing(true);
+
+        const isLoaded = await loadRazorpay();
+        if (!isLoaded) {
+            // Fallback to Razorpay payment page link if script fails to load
+            window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+            return;
+        }
+
+        const numericPrice = parseInt(price.replace(/[^0-9]/g, ''), 10);
+        const currency = isIndia ? 'INR' : 'GBP';
+
+        try {
+            const res = await fetch('/api/razorpay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: numericPrice, currency })
+            });
+
+            if (!res.ok) {
+                // Fallback to payment link if order creation fails
+                window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+                return;
+            }
+
+            const order = await res.json();
+
+            if (order.error) {
+                window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+                return;
+            }
+
+            const options = {
+                key: 'rzp_live_SNuYyvjWoaQDcz',
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Birendra Global Vision',
+                description: selectedService.subtitle,
+                order_id: order.id,
+                handler: async function (response: any) {
+                    try {
+                        await supabase.from('bookings').insert([{
+                            type: 'life_hub',
+                            service_name: selectedService.subtitle,
+                            customer_name: form.name,
+                            email: form.email,
+                            whatsapp: form.whatsapp,
+                            country: form.country,
+                            role: form.type,
+                            date: form.date,
+                            time: form.time,
+                            notes: form.notes,
+                            amount_paid: numericPrice,
+                            payment_id: response.razorpay_payment_id || 'link_fallback'
+                        }]);
+                    } catch (err) {
+                        console.error("Supabase Log Error:", err);
+                    }
+                    setStep(3);
+                },
+                prefill: {
+                    name: form.name,
+                    email: form.email,
+                    contact: form.whatsapp
+                },
+                theme: {
+                    color: '#2C2916'
+                }
+            };
+            const rzp = new (window as any).Razorpay(options);
+            rzp.on('payment.failed', function () {
+                setIsProcessing(false);
+            });
+            rzp.open();
+        } catch (err) {
+            console.error(err);
+            window.location.href = 'https://rzp.io/rzp/jbjzVAjW';
+        }
     };
 
     return (
@@ -359,9 +449,10 @@ function BookingForm() {
                                             </button>
                                             <button
                                                 type="submit"
-                                                className="flex-1 bg-[#2C2916] text-[#EDE9E1] py-4 text-sm font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-2 hover:bg-[#7A6E3A] transition-colors rounded-full"
+                                                disabled={isProcessing}
+                                                className="flex-1 bg-[#2C2916] text-[#EDE9E1] py-4 text-sm font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-2 hover:bg-[#7A6E3A] transition-colors rounded-full disabled:opacity-70 disabled:cursor-not-allowed"
                                             >
-                                                Confirm Booking — {price} <ArrowRight size={14} />
+                                                {isProcessing ? 'Processing...' : `Confirm & Pay — ${price}`} <ArrowRight size={14} />
                                             </button>
                                         </div>
                                     </form>
@@ -420,28 +511,29 @@ function BookingForm() {
                                 <div className="max-w-2xl mx-auto text-center">
 
                                     {/* Mandala icon */}
-                                    <div className="w-24 h-24 rounded-full border-2 border-[#7A6E3A] bg-[#F5F1E8] mx-auto flex items-center justify-center mb-8 relative">
-                                        <CheckCircle2 size={36} className="text-[#7A6E3A]" />
+                                    <div className="w-24 h-24 rounded-full border-2 border-[#C8B96E] bg-white mx-auto flex items-center justify-center mb-8 relative shadow-[0_4px_40px_rgba(200,185,110,0.3)]">
+                                        <Heart size={36} className="text-[#C8B96E] fill-[#C8B96E]" />
                                         <motion.div
                                             animate={{ rotate: 360 }}
                                             transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                                            className="absolute inset-0 rounded-full border border-dashed border-[#C8B96E]/50"
+                                            className="absolute inset-0 rounded-full border border-dashed border-[#7A6E3A]/50"
                                         />
                                     </div>
 
                                     <p className="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#7A6E3A] mb-4 flex items-center justify-center gap-2">
-                                        <span className="w-6 h-px bg-[#7A6E3A]" /> Booking Received <span className="w-6 h-px bg-[#7A6E3A]" />
+                                        <span className="w-6 h-px bg-[#7A6E3A]" /> Infinite Gratitude <span className="w-6 h-px bg-[#7A6E3A]" />
                                     </p>
 
                                     <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#2C2916] leading-tight mb-5" style={{ fontFamily: FONT }}>
-                                        Your session<br /><em className="text-[#7A6E3A]">is confirmed.</em>
+                                        Your cosmic journey<br /><em className="text-[#C8B96E]">begins here.</em>
                                     </h2>
 
                                     <p className="text-lg text-[#5A5040] leading-relaxed mb-3">
-                                        Thank you, <strong className="text-[#2C2916]">{form.name}</strong>. Your <strong>{selectedService.subtitle}</strong> booking has been received.
+                                        We are deeply honored to welcome you, <strong className="text-[#2C2916]">{form.name}</strong>. Your <strong>{selectedService.subtitle}</strong> booking is confirmed.
+                                        Get ready to experience profound transformation.
                                     </p>
                                     <p className="text-base text-[#A09070] mb-10">
-                                        We'll reach out to you on WhatsApp at <strong className="text-[#7A6E3A]">{form.whatsapp}</strong> within 24 hours to confirm your slot and share the Zoom link.
+                                        Our team will lovingly reach out to you on WhatsApp at <strong className="text-[#7A6E3A]">{form.whatsapp}</strong> within the next 24 hours to confirm your slot and share your private Zoom link.
                                     </p>
 
                                     {/* Summary box */}
