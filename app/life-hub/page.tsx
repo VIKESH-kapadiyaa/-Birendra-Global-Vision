@@ -400,42 +400,16 @@ export default function LifeHub() {
                             {/* Right: decorative SVG mandala */}
                             <FadeIn delay={0.25} direction="left" className="absolute -right-[30%] -top-[10%] opacity-10 pointer-events-none scale-150 lg:scale-100 lg:opacity-100 lg:pointer-events-auto lg:static lg:flex-1 flex items-center justify-center z-[-1] lg:z-auto">
                                 <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-                                    className="relative w-[420px] h-[420px]"
+                                    animate={{ y: [-15, 15, -15] }}
+                                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                                    className="relative w-[420px] h-[420px] flex items-center justify-center"
                                 >
-                                    <svg viewBox="0 0 400 400" className="w-full h-full" style={{ color: '#7A6E3A' }}>
-                                        {/* Outer circle */}
-                                        <circle cx="200" cy="200" r="190" fill="none" stroke="currentColor" strokeWidth="0.8" strokeDasharray="4 8" />
-                                        <circle cx="200" cy="200" r="160" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                                        <circle cx="200" cy="200" r="120" fill="none" stroke="currentColor" strokeWidth="0.8" strokeDasharray="2 6" />
-                                        <circle cx="200" cy="200" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                                        <circle cx="200" cy="200" r="40" fill="none" stroke="currentColor" strokeWidth="1" />
-                                        {/* Cross lines */}
-                                        <line x1="200" y1="10" x2="200" y2="390" stroke="currentColor" strokeWidth="0.4" />
-                                        <line x1="10" y1="200" x2="390" y2="200" stroke="currentColor" strokeWidth="0.4" />
-                                        <line x1="65" y1="65" x2="335" y2="335" stroke="currentColor" strokeWidth="0.4" />
-                                        <line x1="335" y1="65" x2="65" y2="335" stroke="currentColor" strokeWidth="0.4" />
-                                        {/* 8 dots on second ring */}
-                                        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
-                                            const r = 160;
-                                            const rad = (angle * Math.PI) / 180;
-                                            return <circle key={angle} cx={200 + r * Math.cos(rad)} cy={200 + r * Math.sin(rad)} r="4" fill="currentColor" />;
-                                        })}
-                                        {/* Center star */}
-                                        <polygon points="200,170 209,191 232,191 214,205 221,228 200,215 179,228 186,205 168,191 191,191" fill="none" stroke="currentColor" strokeWidth="1.2" />
-                                    </svg>
-                                    {/* Center label (non-rotating) */}
-                                    <motion.div
-                                        animate={{ rotate: -360 }}
-                                        transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-                                        className="absolute inset-0 flex items-center justify-center"
-                                    >
-                                        <div className="text-center">
-                                            <p className="text-3xl font-bold text-[#7A6E3A]" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>BGV</p>
-                                            <p className="text-[9px] uppercase tracking-[0.3em] text-[#7A6E3A] mt-1">Life Hub</p>
-                                        </div>
-                                    </motion.div>
+                                    <img
+                                        src="/life-hub-logo.png"
+                                        alt="BGV Life Hub Logo"
+                                        className="w-full h-full object-contain"
+                                        style={{ filter: 'drop-shadow(0 20px 30px rgba(200,185,110,0.15))' }}
+                                    />
                                 </motion.div>
                             </FadeIn>
                         </div>
