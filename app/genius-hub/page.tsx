@@ -185,7 +185,7 @@ export default function GeniusHub() {
 
     const faculty = [
         {
-            name: "Amaria Srivastava",
+            name: "Amaira Srivastava",
             role: "Senior English Mentor",
             image: "/maam.jpeg",
             color: "#ff90e8", // Hot Pink

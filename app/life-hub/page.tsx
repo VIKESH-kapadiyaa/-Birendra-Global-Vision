@@ -124,7 +124,7 @@ const services: Service[] = [
         tagline: 'Sound is the original medicine',
         description: 'Through the precise use of mantras, sacred sound frequencies and breathwork, this session recalibrates your nervous system and elevates your vibrational state permanently.',
         icon: Mic,
-        image: 'https://images.unsplash.com/photo-1545696968-1a31da406a8a?q=80&w=1200&auto=format&fit=crop',
+        image: '/sound-healing.png',
         duration: '40 min',
         priceIndia: '₹700',
         priceIntl: '£8',
@@ -592,11 +592,11 @@ export default function LifeHub() {
                             <div className="flex flex-col xl:flex-row gap-0 border border-[#C8B96E]/30 overflow-hidden bg-white shadow-[0_4px_40px_rgba(122,110,58,0.06)]">
 
                                 {/* Left — large portrait */}
-                                <div className="w-full xl:w-[40%] relative overflow-hidden h-[340px] sm:h-[400px] md:min-h-[480px] xl:min-h-0">
+                                <div className="w-full xl:w-[40%] relative overflow-hidden bg-[#E8E3D8] flex items-center justify-center">
                                     <img
-                                        src="/faculty/amaira.jpg"
+                                        src="/faculty/amaira-crystal.jpg"
                                         alt="Amaira Srivastava"
-                                        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
+                                        className="w-full h-auto max-h-[600px] object-cover object-top xl:absolute xl:inset-0 xl:h-full xl:object-cover transition-transform duration-700 hover:scale-105"
                                     />
                                     {/* Subtle gradient overlay at bottom */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#1E1A0F]/60 via-transparent to-transparent" />
@@ -684,11 +684,11 @@ export default function LifeHub() {
                             <div className="mt-8 flex flex-col xl:flex-row-reverse gap-0 border border-[#C8B96E]/30 overflow-hidden bg-white shadow-[0_4px_40px_rgba(122,110,58,0.06)]">
 
                                 {/* Right (visually) — large portrait */}
-                                <div className="w-full xl:w-[40%] relative overflow-hidden min-h-[480px] xl:min-h-0">
+                                <div className="w-full xl:w-[40%] relative overflow-hidden bg-[#E8E3D8] flex items-center justify-center">
                                     <img
                                         src="/faculty/harshada.jpg"
                                         alt="Harshada Sawant"
-                                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+                                        className="w-full h-auto max-h-[600px] object-cover object-center xl:absolute xl:inset-0 xl:h-full xl:object-cover transition-transform duration-700 hover:scale-105"
                                     />
                                     {/* Gradient overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#1E1A0F]/60 via-transparent to-transparent" />

@@ -124,7 +124,6 @@ function LinenFooter() {
 
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style={{ color: muted }}>
                     <p>© 2026 <span style={{ color: gold }}>Birendra Global Vision</span>. All Rights Reserved.</p>
-                    <p className="text-center">Transforming Lives Through Knowledge &amp; Wisdom · Delivered Globally via Zoom</p>
                     <div className="flex items-center gap-5">
                         <span>Privacy Policy</span>
                         <span style={{ color: `${gold}50` }}>·</span>
@@ -244,9 +243,6 @@ function BrutalistFooter() {
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-xs font-black uppercase tracking-[0.15em]" style={{ color: grey }}>
                         © 2026 <span style={{ color: yellow }}>Birendra Global Vision</span>. All Rights Reserved.
-                    </p>
-                    <p className="text-xs font-bold uppercase tracking-wider text-center" style={{ color: grey }}>
-                        Transforming Lives Through Knowledge &amp; Wisdom · Delivered Globally via Zoom
                     </p>
                     <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider" style={{ color: grey }}>
                         <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
